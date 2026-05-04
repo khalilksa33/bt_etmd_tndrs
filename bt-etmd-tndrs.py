@@ -64,7 +64,10 @@ SMTP_PASS = os.environ.get("SMTP_PASS")
 EMAIL_FROM = os.environ.get("EMAIL_FROM", SMTP_USER)
 EMAIL_TO = os.environ.get("EMAIL_TO")
 
-REPORT_TITLE = os.environ.get("REPORT_TITLE", "Etimad Tenders – Daily Report")
+REPORT_TITLE = os.environ.get(
+    "ETIMAD_REPORT_TITLE",
+    os.environ.get("REPORT_TITLE", "Etimad Tenders – Daily Report"),
+)
 MAX_ROWS = int(os.environ.get("MAX_ROWS", "50"))
 DATABASE_PATH = os.environ.get("DATABASE_PATH", "tenders.db")
 
