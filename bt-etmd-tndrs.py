@@ -5,6 +5,7 @@ import smtplib
 import ssl
 import asyncio
 import json
+import sqlite3
 import shutil
 import calendar
 from pypdf import PdfWriter
@@ -13,7 +14,6 @@ from email.mime.application import MIMEApplication
 from email.mime.text import MIMEText
 from datetime import datetime
 
-from bs4 import BeautifulSoup
 from playwright.async_api import async_playwright
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.platypus import (
@@ -51,6 +51,11 @@ TARGET_URL = os.environ.get(
     "TARGET_URL",
     "https://tenders.etimad.sa/Tender/AllTendersForVisitor?PageNumber=1",
 )
+TARGET_API_URL = os.environ.get(
+    "TARGET_API_URL",
+    "https://tenders.etimad.sa/Tender/AllSupplierTendersForVisitorAsync?PublishDateId=5",
+)
+API_PAGE_SIZE = int(os.environ.get("ETIMAD_API_PAGE_SIZE", "50"))
 
 SMTP_HOST = os.environ.get("SMTP_HOST")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
@@ -61,6 +66,7 @@ EMAIL_TO = os.environ.get("EMAIL_TO")
 
 REPORT_TITLE = os.environ.get("REPORT_TITLE", "Etimad Tenders – Daily Report")
 MAX_ROWS = int(os.environ.get("MAX_ROWS", "50"))
+DATABASE_PATH = os.environ.get("DATABASE_PATH", "tenders.db")
 
 COMPANY_NAME = os.environ.get("COMPANY_NAME", "")
 LOGO_PATH = os.environ.get("LOGO_PATH")
@@ -68,6 +74,109 @@ FOOTER_TEXT = os.environ.get(
     "FOOTER_TEXT",
     "",
 )
+
+
+def init_db():
+    conn = sqlite3.connect(DATABASE_PATH)
+    cur = conn.cursor()
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS tenders (
+            tender_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            source TEXT NOT NULL,
+            reference TEXT NOT NULL,
+            title TEXT,
+            entity TEXT,
+            sub_entity TEXT,
+            tender_type TEXT,
+            activity TEXT,
+            publication TEXT,
+            inquiry_deadline TEXT,
+            submission_deadline TEXT,
+            opening TEXT,
+            price TEXT,
+            raw_json TEXT,
+            scraped_at TEXT,
+            UNIQUE(source, reference)
+        )
+        """
+    )
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS attendance (
+            attendance_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            tender_id INTEGER,
+            attendee_name TEXT,
+            status TEXT,
+            timestamp TEXT,
+            FOREIGN KEY(tender_id) REFERENCES tenders(tender_id)
+        )
+        """
+    )
+    conn.commit()
+    conn.close()
+
+
+def save_rows_to_db(rows, source, raw_rows=None):
+    conn = sqlite3.connect(DATABASE_PATH)
+    cur = conn.cursor()
+    now = datetime.now().isoformat()
+    before = conn.total_changes
+    for idx, row in enumerate(rows):
+        reference = row[5] if len(row) > 5 and row[5] else str(hash(str(row)))
+        raw_json = None
+        if raw_rows and idx < len(raw_rows):
+            try:
+                raw_json = json.dumps(raw_rows[idx], ensure_ascii=False)
+            except Exception:
+                raw_json = None
+        cur.execute(
+            """
+            INSERT OR IGNORE INTO tenders (
+                source, reference, title, entity, sub_entity,
+                tender_type, activity, publication, inquiry_deadline,
+                submission_deadline, opening, price, raw_json, scraped_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                source,
+                reference,
+                row[0],
+                row[1],
+                row[2],
+                row[3],
+                row[4],
+                row[6],
+                row[7],
+                row[8],
+                row[9],
+                row[10],
+                raw_json,
+                now,
+            ),
+        )
+    conn.commit()
+    inserted = conn.total_changes - before
+    conn.close()
+    return inserted
+
+
+def load_rows_from_db(source):
+    conn = sqlite3.connect(DATABASE_PATH)
+    cur = conn.cursor()
+    cur.execute(
+        """
+        SELECT title, entity, sub_entity, tender_type, activity, reference,
+               publication, inquiry_deadline, submission_deadline, opening, price
+        FROM tenders
+        WHERE source = ?
+        ORDER BY scraped_at DESC, tender_id DESC
+        """,
+        (source,),
+    )
+    rows = cur.fetchall()
+    conn.close()
+    return [list(row) for row in rows]
 
 
 def clean_text(text):
@@ -209,90 +318,89 @@ def translate_rows(rows):
 
 
 def fetch_rows():
-    """Scrape Etimad tenders using Playwright (handles JavaScript rendering)."""
-    if not TARGET_URL:
-        raise RuntimeError("TARGET_URL is not set")
+    """Fetch Etimad tenders using the site’s async JSON API."""
+    if not TARGET_API_URL:
+        raise RuntimeError("TARGET_API_URL is not set")
 
-    # Run async function in sync context
     return asyncio.run(_fetch_rows_async())
 
 
 async def _fetch_rows_async():
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
-        # Use a real browser user agent to avoid bot detection
-        context = await browser.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        request_context = await p.request.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            extra_http_headers={
+                "Accept": "*/*",
+                "X-Requested-With": "XMLHttpRequest",
+                "Referer": TARGET_URL,
+            },
         )
-        page = await context.new_page()
-        
+
         try:
-            await page.goto(TARGET_URL, wait_until='load', timeout=60000)
-            
-            # Wait for the tender cards to actually appear
-            await page.wait_for_selector('.card', state='attached', timeout=20000)
-            
-            content = await page.content()
-            soup = BeautifulSoup(content, 'html.parser')
-            
-            # Find real tender cards only
-            cards = soup.select('.tender-card')[:MAX_ROWS]
             formatted_rows = []
+            page_number = 1
 
-            for card in cards:
-                title = card.select_one('h3 a, h3, .tender-name, [id*="tenderName"], .card-title, .title, .tender-title')
-                title_text = clean_text(title.text) if title else ''
-                if not title_text:
-                    continue
+            while len(formatted_rows) < MAX_ROWS:
+                timestamp = int(datetime.now().timestamp() * 1000)
+                url = f"{TARGET_API_URL}&PageSize={API_PAGE_SIZE}&PageNumber={page_number}&_={timestamp}"
+                response = await request_context.get(url, timeout=60000)
 
-                # Entity and sub-entity come from the same paragraph block
-                entity_text = ''
-                sub_entity_text = ''
-                paragraph = card.select_one('p.pb-2')
-                if paragraph:
-                    parts = [clean_text(s) for s in paragraph.strings if clean_text(s)]
-                    if parts:
-                        entity_text = parts[0]
-                    if len(parts) > 1:
-                        sub_entity_text = parts[1]
+                if response.status != 200:
+                    raise RuntimeError(f"Etimad API request failed: {response.status}")
 
-                tender_type = get_text_from_selectors(
-                    card,
-                    ['span.badge', '.badge', '.tender-type', '.category', '.tender-category'],
-                ) or get_text_by_label(card, ['نوع المنافسة', 'نوع', 'Type'])
+                text = await response.text()
+                try:
+                    payload = json.loads(text)
+                except Exception as exc:
+                    raise RuntimeError(f"Invalid Etimad API response: {exc}") from exc
 
-                activity_text = get_text_from_selectors(card, ['.text-chart-indicator'])
-                if not activity_text:
-                    activity_text = get_text_by_label(card, ['النشاط الأساسي', 'Activity'])
+                page_data = payload.get("data") or []
+                if not page_data:
+                    break
 
-                ref_val = get_text_by_label(card, ['الرقم المرجعي', 'Reference', 'Ref no', 'Ref.'])
-                pub_date = get_text_by_label(card, ['تاريخ النشر', 'Publication'])
-                inquiry_deadline = get_text_by_label(card, ['آخر موعد لإستلام الإستفسارات', 'Inquiry deadline', 'Inquiry'])
-                submit_date = get_text_by_label(card, ['آخر موعد لتقديم العروض', 'Submission deadline', 'Submission'])
-                opening_date = get_text_by_label(card, ['تاريخ ووقت فتح العروض', 'موعد فتح العروض', 'Opening'])
-                price = get_text_by_label(card, ['قيمة وثائق المنافسة', 'قيمة كراسة الشروط', 'Doc price', 'Price', 'Document price'])
+                for item in page_data:
+                    title_text = clean_text(item.get("tenderName") or item.get("referenceNumber") or "")
+                    if not title_text:
+                        continue
 
-                row = [
-                    title_text,
-                    entity_text or 'N/A',
-                    sub_entity_text or '',
-                    tender_type or 'General',
-                    activity_text or 'General',
-                    ref_val,
-                    pub_date,
-                    inquiry_deadline,
-                    submit_date,
-                    opening_date,
-                    price,
-                ]
+                    entity_text = clean_text(item.get("agencyName") or "")
+                    sub_entity_text = clean_text(item.get("branchName") or "")
+                    tender_type = clean_text(item.get("tenderTypeName") or "General")
+                    activity_text = clean_text(item.get("tenderActivityName") or "General")
+                    ref_val = clean_text(item.get("referenceNumber") or item.get("tenderNumber") or item.get("tenderIdString") or str(item.get("tenderId", "")))
+                    pub_date = clean_text(item.get("currentDate") or item.get("currentDateTime") or item.get("createdAt") or "")
+                    inquiry_deadline = clean_text(item.get("lastEnqueriesDate") or "")
+                    submit_date = clean_text(item.get("submitionDate") or "")
+                    opening_date = clean_text(item.get("lastOfferPresentationDate") or item.get("offersOpeningDate") or "")
+                    price_value = item.get("buyingCost") if item.get("buyingCost") not in (None, 0) else item.get("invitationCost") if item.get("invitationCost") not in (None, 0) else item.get("condetionalBookletPrice")
+                    price = f"{price_value:.2f}" if isinstance(price_value, (int, float)) else clean_text(price_value)
 
-                formatted_rows.append(row)
+                    formatted_rows.append([
+                        title_text,
+                        entity_text or 'N/A',
+                        sub_entity_text or '',
+                        tender_type,
+                        activity_text,
+                        ref_val,
+                        pub_date,
+                        inquiry_deadline,
+                        submit_date,
+                        opening_date,
+                        price,
+                    ])
 
-            formatted_rows = sort_rows(formatted_rows)
-            return formatted_rows
+                    if len(formatted_rows) >= MAX_ROWS:
+                        break
+
+                if len(page_data) < API_PAGE_SIZE:
+                    break
+
+                page_number += 1
+
+            return sort_rows(formatted_rows)
 
         finally:
-            await browser.close()
+            await request_context.dispose()
 
 
 
@@ -522,57 +630,42 @@ def send_email(pdf_path):
 
 def main():
     print("🔄 Starting Etimad tenders scraper...")
-    
-    # Load previously reported tenders
-    reported_file = 'reported_tenders.json'
-    if os.path.exists(reported_file):
-        with open(reported_file, 'r') as f:
-            reported = json.load(f)
-    else:
-        reported = {}
-    
     rows = fetch_rows()
     if not rows:
         print("❌ No rows scraped; aborting.")
         return
 
     print(f"✅ Scraped {len(rows)} tenders")
-    
+
     # Translate Arabic text to English
     print("🌐 Translating to English...")
     rows = translate_rows(rows)
     print("✅ Translation complete")
-    
-    # Filter relevant tenders
-    print("🔍 Filtering relevant tenders...")
+
+    # Keep all scraped tenders (no filter applied)
     original_count = len(rows)
-    rows = [row for row in rows if is_relevant_tender(row)]
-    print(f"✅ Filtered to {len(rows)} relevant tenders (from {original_count})")
-    
-    # Add new tenders without duplicates
-    new_count = 0
-    for row in rows:
-        ref_no = row[6] if len(row) > 6 and row[6] else str(hash(str(row)))  # fallback to hash if no ref_no
-        if ref_no not in reported:
-            reported[ref_no] = row
-            new_count += 1
-    
-    all_rows = list(reported.values())
-    print(f"✅ Added {new_count} new tenders, total {len(all_rows)} reported tenders")
-    
-    # Save updated reported tenders
-    with open(reported_file, 'w') as f:
-        json.dump(reported, f, indent=2)
-    
+    print(f"✅ Keeping all {original_count} scraped tenders")
+
+    init_db()
+    new_count = save_rows_to_db(rows, "etimad")
+    print(f"✅ Saved {new_count} new tenders to database")
+
+    all_rows = load_rows_from_db("etimad")
+    print(f"✅ Loaded {len(all_rows)} distinct tenders from database")
+
+    reported_file = 'reported_tenders.json'
+    with open(reported_file, 'w', encoding='utf-8') as f:
+        json.dump({row[5]: row for row in all_rows}, f, indent=2, ensure_ascii=False)
+
     today = datetime.now().strftime("%Y%m%d")
     pdf_name = f"tenders_report_{today}.pdf"
     print(f"📄 Building PDF: {pdf_name}")
     build_pdf(all_rows, pdf_name)
-    
+
     print(f"✉️ Sending email with PDF...")
     send_email(pdf_name)
     print(f"✅ Done! Report sent to {EMAIL_TO}")
-    
+
     # Save third report for monthly compilation
     now = datetime.now()
     if now.hour == 15:

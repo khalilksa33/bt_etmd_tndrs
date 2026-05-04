@@ -5,4 +5,5 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 # Use the virtualenv Python interpreter directly.
+# Schedule this script at 09:00, 11:00, 13:00, and 15:00 Saudi time via cron.
 .venv/bin/python bt-etmd-tndrs.py >> "$(pwd)/bt_tndrs_etimad_cron.log" 2>&1

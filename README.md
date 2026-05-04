@@ -4,11 +4,13 @@ This Python script scrapes daily tenders from the Etimad platform, generates a P
 
 ## Features
 
-- Scrapes tender data from Etimad website using Playwright
-- Translates Arabic text to English
+- Scrapes tender data from Etimad website using its async JSON API
+- Scrapes separate tender listings from Forsah.sa via its API
+- Translates Arabic text to English for all scraped tenders
+- Stores all scraped tenders in SQLite for future portal and attendance expansion
 - Generates professional PDF reports with company branding
 - Sends automated email notifications
-- Scheduled daily execution via cron
+- Scheduled execution via cron at 09:00, 11:00, 13:00, and 15:00 Saudi time
 
 ## Prerequisites
 
@@ -38,7 +40,10 @@ This Python script scrapes daily tenders from the Etimad platform, generates a P
 
 4. Create `.env` file with your configuration:
    ```env
-   TARGET_URL=https://etimad.sa/Tenders/Index
+   TARGET_URL=https://tenders.etimad.sa/Tender/AllTendersForVisitor?PageNumber=1
+   TARGET_API_URL=https://tenders.etimad.sa/Tender/AllSupplierTendersForVisitorAsync?PublishDateId=5
+   FORSAH_API_BASE_URL=https://forsah-api.910ths.sa/api/v1/opportunities
+   DATABASE_PATH=tenders.db
    SMTP_HOST=your-smtp-host
    SMTP_PORT=587
    SMTP_USER=your-email@example.com
@@ -59,24 +64,36 @@ python bt-etmd-tndrs.py
 ```
 
 ### Scheduled Execution
-Use the provided shell script with cron to run the report three times per day:
+Use the provided shell scripts with cron to run the Etimad report four times per day at Saudi time:
 
 ```bash
 # Edit crontab
 crontab -e
 
-# Add these lines to run at 10:00 AM, 01:00 PM, and 03:00 PM
-0 10 * * * /path/to/bt_tndrs_etimad/run_etimad_report.sh
+# Add these lines to run at 09:00, 11:00, 13:00, and 15:00
+0 9 * * * /path/to/bt_tndrs_etimad/run_etimad_report.sh
+0 11 * * * /path/to/bt_tndrs_etimad/run_etimad_report.sh
 0 13 * * * /path/to/bt_tndrs_etimad/run_etimad_report.sh
 0 15 * * * /path/to/bt_tndrs_etimad/run_etimad_report.sh
+```
+
+The new Forsah scraper has its own script and report file, so run it separately with:
+
+```bash
+0 9 * * * /path/to/bt_tndrs_etimad/run_forsah_report.sh
+0 11 * * * /path/to/bt_tndrs_etimad/run_forsah_report.sh
+0 13 * * * /path/to/bt_tndrs_etimad/run_forsah_report.sh
+0 15 * * * /path/to/bt_tndrs_etimad/run_forsah_report.sh
 ```
 
 ## Project Structure
 
 ```
 bt_tndrs_etimad/
-├── bt-etmd-tndrs.py          # Main script
-├── run_etimad_report.sh      # Cron execution script
+├── bt-etmd-tndrs.py          # Main Etimad script
+├── forsah_tenders.py         # Separate Forsah scraper and report generator
+├── run_etimad_report.sh      # Etimad cron execution script
+├── run_forsah_report.sh      # Forsah cron execution script
 ├── requirements.txt          # Python dependencies
 ├── .env                      # Environment variables (not in repo)
 ├── .gitignore                # Git ignore rules
