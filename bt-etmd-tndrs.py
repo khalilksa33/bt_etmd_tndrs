@@ -246,14 +246,18 @@ def parse_date(value):
     if not value:
         return None
     text = arabic_digits_to_ascii(clean_text(value)).replace('/', '-').replace('.', '-').replace('\u200f', '').strip()
+    text = re.sub(r'T', ' ', text)
+    text = re.sub(r'Z$', '', text)
+    text = re.sub(r'([+-]\d{2}:\d{2})$', '', text)
     patterns = [
         '%Y-%m-%d',
+        '%Y-%m-%d %H:%M:%S',
+        '%Y-%m-%d %H:%M',
         '%d-%m-%Y',
         '%d %b %Y',
         '%d %B %Y',
         '%d %b, %Y',
         '%d %B, %Y',
-        '%Y-%m-%d %H:%M',
         '%d-%m-%Y %H:%M',
     ]
     for pattern in patterns:
@@ -262,6 +266,11 @@ def parse_date(value):
         except Exception:
             continue
     return None
+
+
+def is_today(value):
+    date_obj = parse_date(value)
+    return bool(date_obj and date_obj.date() == datetime.now().date())
 
 
 def sort_rows(rows):
@@ -377,6 +386,9 @@ async def _fetch_rows_async():
                     opening_date = clean_text(item.get("lastOfferPresentationDate") or item.get("offersOpeningDate") or "")
                     price_value = item.get("buyingCost") if item.get("buyingCost") not in (None, 0) else item.get("invitationCost") if item.get("invitationCost") not in (None, 0) else item.get("condetionalBookletPrice")
                     price = f"{price_value:.2f}" if isinstance(price_value, (int, float)) else clean_text(price_value)
+
+                    if not is_today(pub_date):
+                        continue
 
                     formatted_rows.append([
                         title_text,
@@ -590,7 +602,7 @@ def build_pdf(rows, path):
         pagesize=landscape(A4),
         rightMargin=15,
         leftMargin=15,
-        topMargin=28 * mm,
+        topMargin=35 * mm,
         bottomMargin=24 * mm,  # space for footer
     )
 
@@ -645,25 +657,21 @@ def main():
     rows = translate_rows(rows)
     print("✅ Translation complete")
 
-    # Keep all scraped tenders (no filter applied)
     original_count = len(rows)
-    print(f"✅ Keeping all {original_count} scraped tenders")
+    print(f"✅ Keeping {original_count} tenders published today")
 
     init_db()
     new_count = save_rows_to_db(rows, "etimad")
     print(f"✅ Saved {new_count} new tenders to database")
 
-    all_rows = load_rows_from_db("etimad")
-    print(f"✅ Loaded {len(all_rows)} distinct tenders from database")
-
     reported_file = 'reported_tenders.json'
     with open(reported_file, 'w', encoding='utf-8') as f:
-        json.dump({row[5]: row for row in all_rows}, f, indent=2, ensure_ascii=False)
+        json.dump({row[5]: row for row in rows}, f, indent=2, ensure_ascii=False)
 
     today = datetime.now().strftime("%Y%m%d")
     pdf_name = f"tenders_report_{today}.pdf"
     print(f"📄 Building PDF: {pdf_name}")
-    build_pdf(all_rows, pdf_name)
+    build_pdf(rows, pdf_name)
 
     print(f"✉️ Sending email with PDF...")
     send_email(pdf_name)

@@ -164,6 +164,9 @@ def parse_date(value):
     if not value:
         return None
     text = arabic_digits_to_ascii(clean_text(value)).replace('/', '-').replace('.', '-').replace('\u200f', '').strip()
+    text = re.sub(r'T', ' ', text)
+    text = re.sub(r'Z$', '', text)
+    text = re.sub(r'([+-]\d{2}:\d{2})$', '', text)
     patterns = [
         '%Y-%m-%d',
         '%Y-%m-%d %H:%M:%S',
@@ -180,6 +183,11 @@ def parse_date(value):
         except Exception:
             continue
     return None
+
+
+def is_today(value):
+    date_obj = parse_date(value)
+    return bool(date_obj and date_obj.date() == datetime.now().date())
 
 
 def sort_rows(rows):
@@ -241,6 +249,8 @@ def fetch_rows():
             activity_text = f"{item.get('daysToGo')} days to close" if item.get('daysToGo') is not None else get_localized_text(item.get('duration'))
             ref_val = item.get('id', '')
             pub_date = item.get('publishDate', '')
+            if not is_today(pub_date):
+                continue
             inquiry_deadline = ''
             submit_date = item.get('dueDate', '')
             opening_date = item.get('awardDate') or item.get('closeDate') or ''
@@ -424,7 +434,7 @@ def build_pdf(rows, path):
         pagesize=landscape(A4),
         rightMargin=15,
         leftMargin=15,
-        topMargin=28 * mm,
+        topMargin=35 * mm,
         bottomMargin=24 * mm,
     )
     doc.build(story, onFirstPage=lambda canvas_obj, doc: (draw_page_header(canvas_obj, doc), add_footer(canvas_obj, doc)), onLaterPages=lambda canvas_obj, doc: (draw_page_header(canvas_obj, doc), add_footer(canvas_obj, doc)))
@@ -463,19 +473,17 @@ def main():
     rows = translate_rows(rows)
     print("✅ Translation complete")
     original_count = len(rows)
-    print(f"✅ Keeping all {original_count} Forsah tenders")
+    print(f"✅ Keeping {original_count} Forsah tenders published today")
     init_db()
     new_count = save_rows_to_db(rows, "forsah")
     print(f"✅ Saved {new_count} new Forsah tenders to database")
-    all_rows = load_rows_from_db("forsah")
-    print(f"✅ Loaded {len(all_rows)} distinct Forsah tenders from database")
     reported_file = 'reported_forsah_tenders.json'
     with open(reported_file, 'w', encoding='utf-8') as f:
-        json.dump({row[5]: row for row in all_rows}, f, indent=2, ensure_ascii=False)
+        json.dump({row[5]: row for row in rows}, f, indent=2, ensure_ascii=False)
     today = datetime.now().strftime("%Y%m%d")
     pdf_name = f"forsah_tenders_report_{today}.pdf"
     print(f"📄 Building Forsah PDF: {pdf_name}")
-    build_pdf(all_rows, pdf_name)
+    build_pdf(rows, pdf_name)
     print(f"✉️ Sending Forsah email with PDF...")
     send_email(pdf_name)
     print(f"✅ Done! Forsah report sent to {EMAIL_TO}")
