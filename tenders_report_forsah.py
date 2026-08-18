@@ -4,6 +4,9 @@ import re
 import ssl
 import json
 import sqlite3
+import time
+import socket
+import urllib.error
 import urllib.request
 import urllib.parse
 import smtplib
@@ -28,6 +31,9 @@ FORSAH_API_BASE_URL = os.environ.get(
     "https://forsah-api.910ths.sa/api/v1/opportunities",
 )
 FORSAH_PER_PAGE = int(os.environ.get("FORSAH_PER_PAGE", "50"))
+FORSAH_MAX_PAGES = int(os.environ.get("FORSAH_MAX_PAGES", "10"))
+FORSAH_FETCH_RETRIES = int(os.environ.get("FORSAH_FETCH_RETRIES", "5"))
+FORSAH_FETCH_BACKOFF = float(os.environ.get("FORSAH_FETCH_BACKOFF", "10"))
 MAX_ROWS = int(os.environ.get("MAX_ROWS", "50"))
 DATABASE_PATH = os.environ.get("DATABASE_PATH", "tenders.db")
 SMTP_HOST = os.environ.get("SMTP_HOST")
@@ -190,6 +196,15 @@ def is_today(value):
     return bool(date_obj and date_obj.date() == datetime.now().date())
 
 
+def is_recent(value, days=7):
+    """Check if date is within the last N days."""
+    date_obj = parse_date(value)
+    if not date_obj:
+        return False
+    days_diff = (datetime.now().date() - date_obj.date()).days
+    return 0 <= days_diff < days
+
+
 def sort_rows(rows):
     def sort_key(row):
         pub_date = parse_date(row[6])
@@ -221,18 +236,42 @@ def translate_rows(rows):
     return translated_rows
 
 
+def fetch_json_with_retries(url):
+    attempt = 1
+    while True:
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, timeout=30) as response:
+                return json.load(response)
+        except (
+            urllib.error.HTTPError,
+            urllib.error.URLError,
+            ConnectionResetError,
+            ConnectionAbortedError,
+            ConnectionRefusedError,
+            TimeoutError,
+            socket.timeout,
+            ssl.SSLError,
+            OSError,
+        ) as exc:
+            if attempt >= FORSAH_FETCH_RETRIES:
+                raise
+            wait = FORSAH_FETCH_BACKOFF * attempt
+            print(f"⚠️ Fetch attempt {attempt} failed: {exc}. Retrying in {wait}s...")
+            time.sleep(wait)
+            attempt += 1
+
+
 def fetch_rows():
     rows = []
     page = 1
-    while len(rows) < MAX_ROWS:
+    while len(rows) < MAX_ROWS and page <= FORSAH_MAX_PAGES:
         params = urllib.parse.urlencode({
             'perPage': FORSAH_PER_PAGE,
             'page': page,
         })
         url = f"{FORSAH_API_BASE_URL}?{params}"
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=30) as response:
-            data = json.load(response)
+        data = fetch_json_with_retries(url)
 
         result = data.get('result', [])
         if not result:
@@ -249,8 +288,6 @@ def fetch_rows():
             activity_text = f"{item.get('daysToGo')} days to close" if item.get('daysToGo') is not None else get_localized_text(item.get('duration'))
             ref_val = item.get('id', '')
             pub_date = item.get('publishDate', '')
-            if not is_today(pub_date):
-                continue
             inquiry_deadline = ''
             submit_date = item.get('dueDate', '')
             opening_date = item.get('awardDate') or item.get('closeDate') or ''
@@ -312,7 +349,7 @@ def draw_page_header(canvas_obj: canvas.Canvas, doc):
             fontName='Helvetica-Bold',
             fontSize=18,
             leading=20,
-            textColor=colors.red,
+            textColor=colors.green,
             alignment=1,
         )
         company_para = Paragraph(company_text, company_style)
@@ -320,8 +357,8 @@ def draw_page_header(canvas_obj: canvas.Canvas, doc):
         company_para.drawOn(canvas_obj, doc.leftMargin, top_y - company_height + 2 * mm)
 
     page_num = canvas_obj.getPageNumber()
-    canvas_obj.setFont("Helvetica", 10)
-    canvas_obj.setFillColor(colors.red)
+    canvas_obj.setFont("Helvetica", 8)
+    canvas_obj.setFillColor(colors.green)
     canvas_obj.drawRightString(width - doc.rightMargin, height - 12 * mm, f"Page {page_num}")
     canvas_obj.setFillColor(colors.black)
 
@@ -330,12 +367,12 @@ def add_footer(canvas_obj: canvas.Canvas, doc):
     width, _ = doc.pagesize
     line_y = 15 * mm
     if FOOTER_TEXT:
-        canvas_obj.setStrokeColor(colors.red)
+        canvas_obj.setStrokeColor(colors.green)
         canvas_obj.setLineWidth(0.5)
         canvas_obj.line(0, line_y, width, line_y)
         footer_style = getSampleStyleSheet()["Normal"].clone('footer')
         footer_style.alignment = 1
-        footer_style.textColor = colors.red
+        footer_style.textColor = colors.green
         footer_style.fontName = "Helvetica"
         footer_style.fontSize = 9
         footer_style.leading = 11
@@ -367,7 +404,7 @@ def build_pdf(rows, path):
         textColor=colors.grey,
         spaceAfter=4 * mm,
     )
-    story.append(Paragraph(datetime.now().strftime('Generated on %Y-%m-%d %H:%M'), timestamp_style))
+    story.append(Paragraph(datetime.now().strftime('Generated on %d-%m-%Y %H:%M'), timestamp_style))
     headers = [
         "#",
         "Opportunity title",
@@ -410,7 +447,7 @@ def build_pdf(rows, path):
     col_widths = [8*mm, 75*mm, 33*mm, 26*mm, 20*mm, 18*mm, 25*mm, 18*mm, 18*mm, 18*mm, 18*mm, 12*mm]
     table = Table(data, colWidths=col_widths, repeatRows=1)
     table.setStyle(TableStyle([
-        ("BACKGROUND", (0, 0), (-1, 0), colors.red),
+        ("BACKGROUND", (0, 0), (-1, 0), colors.green),
         ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
         ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
         ("FONTSIZE", (0, 0), (-1, 0), 8),
@@ -423,8 +460,8 @@ def build_pdf(rows, path):
         ("TOPPADDING", (0, 0), (-1, -1), 2),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
         ("GRID", (0, 0), (-1, 0), 0.5, colors.white),
-        ("GRID", (0, 1), (-1, -1), 0.5, colors.red),
-        ("BOX", (0, 0), (-1, -1), 0.5, colors.red),
+        ("GRID", (0, 1), (-1, -1), 0.5, colors.green),
+        ("BOX", (0, 0), (-1, -1), 0.5, colors.green),
         ("LINEABOVE", (0, 0), (-1, 0), 0.5, colors.white),
         ("LINEBELOW", (0, 0), (-1, 0), 0.5, colors.white),
     ]))
@@ -464,7 +501,11 @@ def send_email(pdf_path):
 
 def main():
     print("🔄 Starting Forsah tenders scraper...")
-    rows = fetch_rows()
+    try:
+        rows = fetch_rows()
+    except Exception as exc:
+        print(f"❌ Failed to fetch Forsah tenders: {exc}")
+        return
     if not rows:
         print("❌ No Forsah tenders scraped; aborting.")
         return

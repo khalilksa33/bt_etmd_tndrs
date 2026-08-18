@@ -249,8 +249,6 @@ def fetch_rows():
             activity_text = f"{item.get('daysToGo')} days to close" if item.get('daysToGo') is not None else get_localized_text(item.get('duration'))
             ref_val = item.get('id', '')
             pub_date = item.get('publishDate', '')
-            if not is_today(pub_date):
-                continue
             inquiry_deadline = ''
             submit_date = item.get('dueDate', '')
             opening_date = item.get('awardDate') or item.get('closeDate') or ''
