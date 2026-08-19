@@ -1,4 +1,4 @@
-from flask import Flask, render_template_string, request, redirect, url_for, Response
+from flask import Flask, render_template_string, request, redirect, url_for, Response, send_from_directory
 import sqlite3
 import os
 from werkzeug.utils import secure_filename
@@ -97,7 +97,7 @@ HTML_TEMPLATE = '''
             <tr>
                 <td>
                     {% if company['logo'] %}
-                        <img class="logo-preview" src="{{ url_for('static', filename='../logos/' + company['logo']) }}" alt="Logo">
+                        <img class="logo-preview" src="{{ url_for('uploaded_file', filename=company['logo']) }}" alt="Logo">
                     {% else %}
                         No logo
                     {% endif %}
@@ -153,7 +153,12 @@ def delete_company(id):
     conn.close()
     return redirect(url_for('index'))
 
+@app.route('/logos/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 if __name__ == '__main__':
     init_db()
     app.run(host='0.0.0.0', port=5000)
+
 
