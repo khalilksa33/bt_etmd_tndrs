@@ -34,6 +34,12 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh -i ~/.ssh/id_rsa $SSH_USER@gcloud.26i.uk "cd ~/bt_tndrs_etimad && git pull origin main && source venv/bin/activate && pip install -r requirements.txt && pkill -f 'python3 app.py' || true && nohup python3 app.py > app.log 2>&1 & && echo "0 9,11,13,15 * * * cd ~/bt_tndrs_etimad && ~/bt_tndrs_etimad/venv/bin/python3 ~/bt_tndrs_etimad/forsah_tenders.py >> ~/bt_tndrs_etimad/bt_etmd_tndrs_cron.log 2>&1
-0 9,11,13,15 * * * cd ~/bt_tndrs_etimad && ~/bt_tndrs_etimad/venv/bin/python3 ~/bt_tndrs_etimad/etimad_tenders.py >> ~/bt_tndrs_etimad/etimad_tenders_cron.log 2>&1" | crontab -"
-
+          ssh -i ~/.ssh/id_rsa $SSH_USER@gcloud.26i.uk << 'EOF'
+          cd ~/bt_tndrs_etimad
+          git pull origin main
+          source venv/bin/activate
+          pip install -r requirements.txt
+          pkill -f 'python3 app.py' || true
+          nohup python3 app.py > app.log 2>&1 &
+          (echo "0 9,11,13,15 * * * cd ~/bt_tndrs_etimad && ~/bt_tndrs_etimad/venv/bin/python3 ~/bt_tndrs_etimad/forsah_tenders.py >> ~/bt_tndrs_etimad/bt_etmd_tndrs_cron.log 2>&1"; echo "0 9,11,13,15 * * * cd ~/bt_tndrs_etimad && ~/bt_tndrs_etimad/venv/bin/python3 ~/bt_tndrs_etimad/etimad_tenders.py >> ~/bt_tndrs_etimad/etimad_tenders_cron.log 2>&1") | crontab -
+          EOF
