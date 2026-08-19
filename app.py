@@ -1,4 +1,4 @@
-from flask import Flask, render_template_string, request, redirect, url_for
+from flask import Flask, render_template_string, request, redirect, url_for, Response
 import sqlite3
 import os
 from werkzeug.utils import secure_filename
@@ -10,6 +10,23 @@ UPLOAD_FOLDER = 'logos'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 app = Flask(__name__)
+
+def check_auth(username, password):
+    return username == os.environ.get("ADMIN_USER", "admin") and password == os.environ.get("ADMIN_PASS", "admin123")
+
+def authenticate():
+    return Response('Could not verify your access level for that URL.\n'
+    'You have to login with proper credentials', 401,
+    {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+def requires_auth(f):
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    decorated.__name__ = f.__name__
+    return decorated
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def get_db():
@@ -97,6 +114,7 @@ HTML_TEMPLATE = '''
 '''
 
 @app.route('/')
+@requires_auth
 def index():
     init_db()
     conn = get_db()
@@ -105,6 +123,7 @@ def index():
     return render_template_string(HTML_TEMPLATE, companies=companies)
 
 @app.route('/add', methods=['POST'])
+@requires_auth
 def add_company():
     name = request.form['name']
     email = request.form['email']
@@ -126,6 +145,7 @@ def add_company():
     return redirect(url_for('index'))
 
 @app.route('/delete/<int:id>')
+@requires_auth
 def delete_company(id):
     conn = get_db()
     conn.execute('DELETE FROM companies WHERE id = ?', (id,))
@@ -136,3 +156,4 @@ def delete_company(id):
 if __name__ == '__main__':
     init_db()
     app.run(host='0.0.0.0', port=5000)
+
