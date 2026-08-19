@@ -1,0 +1,4 @@
+reportlab
+python-dotenv
+deep-translator
+flask
