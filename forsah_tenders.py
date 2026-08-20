@@ -484,22 +484,22 @@ def main():
     args = parser.parse_args()
 
     print("🔄 Starting Forsah tenders scraper...")
-    rows = fetch_rows()
-    if not rows:
+    arabic_rows = fetch_rows()
+    if not arabic_rows:
         print("❌ No Forsah tenders scraped; aborting.")
         return
-    print(f"✅ Scraped {len(rows)} Forsah tenders")
+    print(f"✅ Scraped {len(arabic_rows)} Forsah tenders")
     print("🌐 Translating to English...")
-    rows = translate_rows(rows)
+    english_rows = translate_rows(arabic_rows)
     print("✅ Translation complete")
-    original_count = len(rows)
+    original_count = len(english_rows)
     print(f"✅ Keeping {original_count} Forsah tenders published today")
     init_db()
-    new_count = save_rows_to_db(rows, "forsah")
+    new_count = save_rows_to_db(english_rows, "forsah")
     print(f"✅ Saved {new_count} new Forsah tenders to database")
     reported_file = 'reported_forsah_tenders.json'
     with open(reported_file, 'w', encoding='utf-8') as f:
-        json.dump({row[5]: row for row in rows}, f, indent=2, ensure_ascii=False)
+        json.dump({row[5]: row for row in english_rows}, f, indent=2, ensure_ascii=False)
     today = datetime.now().strftime("%Y%m%d")
     report_dir = os.path.join('reports', today)
     os.makedirs(report_dir, exist_ok=True)
@@ -518,11 +518,14 @@ def main():
         for company in companies:
             c_name = company["name"]
             c_email = company["email"]
+            c_lang = company["language"]
             c_logo = os.path.join("logos", company["logo"]) if company["logo"] else None
             
             company_pdf_name = os.path.join(report_dir, f"forsah_tenders_report_{today}_{c_name.replace(' ', '_')}.pdf")
-            print(f"📄 Building Forsah PDF for {c_name}: {company_pdf_name}")
-            build_pdf(rows, company_pdf_name, company_name=c_name, logo_path=c_logo)
+            print(f"📄 Building Forsah PDF for {c_name} (Language: {c_lang}): {company_pdf_name}")
+            
+            pdf_rows = arabic_rows if c_lang == "Arabic" else english_rows
+            build_pdf(pdf_rows, company_pdf_name, company_name=c_name, logo_path=c_logo)
             
             print(f"✉️ Sending Forsah email with PDF to {c_email}...")
             try:
@@ -532,7 +535,7 @@ def main():
     else:
         print("⚠️ No companies found in the database. Generating default PDF.")
         pdf_name = os.path.join(report_dir, f"forsah_tenders_report_{today}.pdf")
-        build_pdf(rows, pdf_name)
+        build_pdf(english_rows, pdf_name)
 
 
 
