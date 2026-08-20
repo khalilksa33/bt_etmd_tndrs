@@ -467,10 +467,15 @@ def send_email(pdf_path, email_to):
         part.add_header("Content-Disposition", "attachment", filename=os.path.basename(pdf_path))
         msg.attach(part)
     context = ssl.create_default_context()
-    with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
-        server.starttls(context=context)
-        server.login(SMTP_USER, SMTP_PASS)
-        server.send_message(msg)
+    if SMTP_PORT == 465:
+        with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, context=context, timeout=30) as server:
+            server.login(SMTP_USER, SMTP_PASS)
+            server.send_message(msg)
+    else:
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=30) as server:
+            server.starttls(context=context)
+            server.login(SMTP_USER, SMTP_PASS)
+            server.send_message(msg)
 
 
 def main():
