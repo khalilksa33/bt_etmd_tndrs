@@ -2,6 +2,7 @@ from flask import Flask, render_template_string, request, redirect, url_for, Res
 import sqlite3
 import os
 from werkzeug.utils import secure_filename
+import subprocess
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -748,6 +749,12 @@ def subscribe():
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ''', (name, email, phone, contact, cr, industry, language, sub_type))
         conn.commit()
+        # Trigger immediate test report for new subscriber
+        try:
+            # We assume it runs from the project root
+            subprocess.Popen(["venv/bin/python3", "forsah_tenders.py", "--email", email])
+        except Exception as e:
+            print("Failed to trigger report:", e)
     except sqlite3.IntegrityError:
         pass # Email already exists
     conn.close()

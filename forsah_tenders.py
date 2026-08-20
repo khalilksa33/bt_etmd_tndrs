@@ -4,6 +4,7 @@ import re
 import ssl
 import json
 import sqlite3
+import argparse
 import urllib.request
 import urllib.parse
 import smtplib
@@ -473,6 +474,10 @@ def send_email(pdf_path, email_to):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--email', help='Send report only to this specific email')
+    args = parser.parse_args()
+
     print("🔄 Starting Forsah tenders scraper...")
     rows = fetch_rows()
     if not rows:
@@ -494,7 +499,10 @@ def main():
     conn = sqlite3.connect(DATABASE_PATH)
     conn.row_factory = sqlite3.Row
     try:
-        companies = conn.execute("SELECT * FROM companies").fetchall()
+        if args.email:
+            companies = conn.execute("SELECT * FROM companies WHERE email = ?", (args.email,)).fetchall()
+        else:
+            companies = conn.execute("SELECT * FROM companies").fetchall()
     except sqlite3.OperationalError:
         companies = []
     conn.close()
@@ -523,6 +531,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 
 
 
