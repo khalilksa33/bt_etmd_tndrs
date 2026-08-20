@@ -136,10 +136,7 @@ LANDING_PAGE_HTML = '''
                             </select>
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Company Logo (Optional)</label>
-                        <input type="file" name="logo" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border p-1">
-                    </div>
+                    
                     <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                         Start Receiving Reports
                     </button>
@@ -165,7 +162,7 @@ ADMIN_HTML = '''
             
             <div class="border-b border-gray-200 mb-6">
                 <nav class="-mb-px flex space-x-8">
-                    <a href="{{ url_for('index') }}" class="{% if active_tab == 'companies' %}border-blue-500 text-blue-600{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
+                    <a href="{{ url_for('admin') }}" class="{% if active_tab == 'companies' %}border-blue-500 text-blue-600{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
                         Subscribers
                     </a>
                     <a href="{{ url_for('admin_settings') }}" class="{% if active_tab == 'settings' %}border-blue-500 text-blue-600{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
@@ -179,7 +176,7 @@ ADMIN_HTML = '''
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Logo</th>
+                                
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Company</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Details</th>
@@ -189,13 +186,7 @@ ADMIN_HTML = '''
                         <tbody class="bg-white divide-y divide-gray-200">
                             {% for c in companies %}
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    {% if c['logo'] %}
-                                        <img class="h-10 w-auto" src="{{ url_for('uploaded_file', filename=c['logo']) }}">
-                                    {% else %}
-                                        <span class="text-gray-400 text-sm">None</span>
-                                    {% endif %}
-                                </td>
+                                
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="font-medium text-gray-900">{{ c['name'] }}</div>
                                     <div class="text-sm text-gray-500">{{ c['cr_number'] }}</div>
@@ -250,8 +241,8 @@ ADMIN_HTML = '''
 </html>
 '''
 
-@app.route('/landing')
-def landing():
+@app.route('/')
+def index():
     init_db()
     success = request.args.get('success') == '1'
     return render_template_string(LANDING_PAGE_HTML, success=success)
@@ -286,7 +277,6 @@ def subscribe():
     conn.close()
     return redirect(url_for('index', success='1'))
 
-@app.route('/')
 @app.route('/admin')
 @requires_auth
 def admin():
@@ -334,7 +324,7 @@ def delete_company(id):
     conn.execute('DELETE FROM companies WHERE id = ?', (id,))
     conn.commit()
     conn.close()
-    return redirect(url_for('index'))
+    return redirect(url_for('admin'))
 
 @app.route('/logos/<filename>')
 def uploaded_file(filename):
@@ -343,4 +333,6 @@ def uploaded_file(filename):
 if __name__ == '__main__':
     init_db()
     app.run(host='0.0.0.0', port=5000)
+
+
 
