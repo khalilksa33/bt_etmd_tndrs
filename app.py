@@ -165,7 +165,7 @@ ADMIN_HTML = '''
             
             <div class="border-b border-gray-200 mb-6">
                 <nav class="-mb-px flex space-x-8">
-                    <a href="{{ url_for('admin') }}" class="{% if active_tab == 'companies' %}border-blue-500 text-blue-600{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
+                    <a href="{{ url_for('index') }}" class="{% if active_tab == 'companies' %}border-blue-500 text-blue-600{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
                         Subscribers
                     </a>
                     <a href="{{ url_for('admin_settings') }}" class="{% if active_tab == 'settings' %}border-blue-500 text-blue-600{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
@@ -250,8 +250,8 @@ ADMIN_HTML = '''
 </html>
 '''
 
-@app.route('/')
-def index():
+@app.route('/landing')
+def landing():
     init_db()
     success = request.args.get('success') == '1'
     return render_template_string(LANDING_PAGE_HTML, success=success)
@@ -286,6 +286,7 @@ def subscribe():
     conn.close()
     return redirect(url_for('index', success='1'))
 
+@app.route('/')
 @app.route('/admin')
 @requires_auth
 def admin():
@@ -333,7 +334,7 @@ def delete_company(id):
     conn.execute('DELETE FROM companies WHERE id = ?', (id,))
     conn.commit()
     conn.close()
-    return redirect(url_for('admin'))
+    return redirect(url_for('index'))
 
 @app.route('/logos/<filename>')
 def uploaded_file(filename):
@@ -342,3 +343,4 @@ def uploaded_file(filename):
 if __name__ == '__main__':
     init_db()
     app.run(host='0.0.0.0', port=5000)
+
