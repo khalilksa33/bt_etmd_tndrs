@@ -1010,6 +1010,13 @@ def admin_add():
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             ''', (name, email, phone, contact, cr, industry, language, sub_type))
             conn.commit()
+            
+            import subprocess
+            try:
+                subprocess.Popen(f"venv/bin/python3 forsah_tenders.py --email '{email}' >> test_report.log 2>&1", shell=True)
+            except Exception as e:
+                print("Failed to trigger report:", e)
+                
         except sqlite3.IntegrityError:
             pass
         conn.close()
