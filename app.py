@@ -412,7 +412,7 @@ LANDING_PAGE_HTML_AR = '''
                 </main>
             </div>
         </div>
-        <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 flex items-center justify-center p-8 lg:p-12 lg:mt-0 hidden lg:flex">
+        <div class="lg:absolute lg:inset-y-0 lg:left-0 lg:w-1/2 flex items-center justify-center p-8 lg:p-12 lg:mt-0 hidden lg:flex">
             <!-- Project Image Slider -->
             <div class="slider shadow-2xl border-4 border-gray-800">
                 <div class="slides">
