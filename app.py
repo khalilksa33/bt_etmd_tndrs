@@ -232,7 +232,7 @@ LANDING_PAGE_HTML = '''
                         </div>
                         <div class="ml-3">
                             <p class="text-sm text-green-700 font-medium">
-                                Success! Your subscription has been received. Our team will contact you shortly.
+                                Success! Your 7-day free trial has started. Our representative will contact you shortly for further assistance.
                             </p>
                         </div>
                     </div>
@@ -246,13 +246,13 @@ LANDING_PAGE_HTML = '''
                             <label class="cursor-pointer relative">
                                 <input type="radio" name="subscription_type" value="Monthly" class="peer sr-only" checked>
                                 <div class="px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white font-medium text-gray-600 transition-colors">
-                                    Monthly Plan
+                                    Monthly Plan (100 SAR/mo after trial)
                                 </div>
                             </label>
                             <label class="cursor-pointer relative">
                                 <input type="radio" name="subscription_type" value="Annual" class="peer sr-only">
                                 <div class="px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white font-medium text-gray-600 transition-colors">
-                                    Annual Plan (Save 20%)
+                                    Annual Plan (1000 SAR/yr after trial)
                                 </div>
                             </label>
                         </div>
@@ -499,4 +499,5 @@ def delete_company(id):
 if __name__ == '__main__':
     init_db()
     app.run(host='0.0.0.0', port=5000)
+
 
