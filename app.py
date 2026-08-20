@@ -825,10 +825,20 @@ ADMIN_HTML = '''<!DOCTYPE html>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">From Email Address</label>
                         <input type="email" name="email_from" value="{{ config_data.get('email_from', '') }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
                     </div>
-                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        Save Settings
-                    </button>
+                    <div class="flex items-center space-x-4">
+                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Save Settings
+                        </button>
+                        <a href="{{ url_for('admin_test_smtp') }}" class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600">
+                            Send Test Email
+                        </a>
+                    </div>
                 </form>
+                {% if test_result %}
+                    <div class="mt-4 p-4 rounded-md {% if 'Success' in test_result %}bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300{% else %}bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300{% endif %}">
+                        <p class="text-sm font-medium">{{ test_result }}</p>
+                    </div>
+                {% endif %}
             {% endif %}
         </div>
     </div>
@@ -1058,6 +1068,55 @@ def admin_edit(id):
     company = conn.execute('SELECT * FROM companies WHERE id = ?', (id,)).fetchone()
     conn.close()
     return render_template_string(ADMIN_HTML, active_tab='edit', company=company)
+
+@app.route('/admin/settings/test')
+@requires_auth
+def admin_test_smtp():
+    conn = get_db()
+    settings_rows = conn.execute('SELECT * FROM settings').fetchall()
+    conn.close()
+    
+    config = {row['key']: row['value'] for row in settings_rows}
+    smtp_host = config.get('smtp_host')
+    smtp_port = int(config.get('smtp_port', 587))
+    smtp_user = config.get('smtp_user')
+    smtp_pass = config.get('smtp_pass')
+    email_from = config.get('email_from')
+    
+    result = "Unknown error"
+    if not all([smtp_host, smtp_port, smtp_user, smtp_pass, email_from]):
+        result = "Error: Please save all SMTP settings first (including password) before testing."
+    else:
+        import smtplib
+        from email.mime.text import MIMEText
+        from email.mime.multipart import MIMEMultipart
+        
+        try:
+            msg = MIMEMultipart()
+            msg['From'] = f"TendersHub <{email_from}>"
+            msg['To'] = smtp_user
+            msg['Subject'] = "TendersHub - SMTP Test Successful!"
+            
+            body = "Hello! If you are reading this, your SMTP settings in the TendersHub Admin Dashboard are perfectly configured!"
+            msg.attach(MIMEText(body, 'plain'))
+            
+            server = smtplib.SMTP(smtp_host, smtp_port)
+            server.starttls()
+            server.login(smtp_user, smtp_pass)
+            server.send_message(msg)
+            server.quit()
+            result = f"Success! A test email was sent to {smtp_user}."
+        except Exception as e:
+            result = f"Error sending email: {str(e)}"
+            
+    # Re-render settings with result
+    init_db()
+    conn = get_db()
+    settings_rows = conn.execute('SELECT * FROM settings').fetchall()
+    conn.close()
+    config_data = {row['key']: row['value'] for row in settings_rows}
+    
+    return render_template_string(ADMIN_HTML, config_data=config_data, active_tab='settings', test_result=result)
 
 if __name__ == '__main__':
     init_db()
