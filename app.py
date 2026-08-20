@@ -151,7 +151,7 @@ LANDING_PAGE_HTML = '''
                         <div class="mt-8 sm:flex sm:justify-center lg:justify-start">
                             <div class="rounded-md shadow">
                                 <a href="#subscribe" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-900 bg-blue-100 hover:bg-blue-200 md:py-4 md:text-lg md:px-10 transition duration-150">
-                                    Subscribe Now
+                                    Start 7-Day Free Trial
                                 </a>
                             </div>
                             <div class="mt-3 sm:mt-0 sm:ml-3">
@@ -220,8 +220,8 @@ LANDING_PAGE_HTML = '''
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden p-8 border border-blue-100">
                 <div class="text-center mb-8">
-                    <h2 class="text-3xl font-extrabold text-gray-900">Choose Your Plan & Subscribe</h2>
-                    <p class="mt-2 text-gray-600">Select your preferred subscription tier and enter your details.</p>
+                    <h2 class="text-3xl font-extrabold text-gray-900">Start Your 1-Week Free Trial</h2>
+                    <p class="mt-2 text-gray-600">No credit card required. Experience the full power of daily tender reports completely free for 7 days.</p>
                 </div>
                 
                 {% if success %}
@@ -293,7 +293,7 @@ LANDING_PAGE_HTML = '''
                     </div>
                     <div class="pt-4">
                         <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150">
-                            Submit Subscription
+                            Start 7-Day Free Trial
                         </button>
                     </div>
                 </form>
@@ -499,3 +499,4 @@ def delete_company(id):
 if __name__ == '__main__':
     init_db()
     app.run(host='0.0.0.0', port=5000)
+
