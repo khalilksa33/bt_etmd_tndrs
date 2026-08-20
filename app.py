@@ -819,7 +819,15 @@ ADMIN_HTML = '''<!DOCTYPE html>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">SMTP Password</label>
-                        <input type="password" name="smtp_pass" value="{{ config_data.get('smtp_pass', '') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
+                        <div class="relative mt-1">
+                            <input type="password" id="smtp_pass_input" name="smtp_pass" value="{{ config_data.get('smtp_pass', '') }}" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2 pr-10">
+                            <button type="button" onclick="const p = document.getElementById('smtp_pass_input'); p.type = p.type === 'password' ? 'text' : 'password';" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">From Email Address</label>
@@ -1100,8 +1108,11 @@ def admin_test_smtp():
             body = "Hello! If you are reading this, your SMTP settings in the TendersHub Admin Dashboard are perfectly configured!"
             msg.attach(MIMEText(body, 'plain'))
             
-            server = smtplib.SMTP(smtp_host, smtp_port)
-            server.starttls()
+            if smtp_port == 465:
+                server = smtplib.SMTP_SSL(smtp_host, smtp_port, timeout=10)
+            else:
+                server = smtplib.SMTP(smtp_host, smtp_port, timeout=10)
+                server.starttls()
             server.login(smtp_user, smtp_pass)
             server.send_message(msg)
             server.quit()
