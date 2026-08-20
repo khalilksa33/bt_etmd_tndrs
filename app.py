@@ -109,6 +109,39 @@ LANDING_PAGE_HTML_EN = '''
             }
         });
     </script>
+<script>
+        var themeToggleDarkIconAdmin = document.getElementById('theme-toggle-dark-icon-admin');
+        var themeToggleLightIconAdmin = document.getElementById('theme-toggle-light-icon-admin');
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            if(themeToggleLightIconAdmin) themeToggleLightIconAdmin.classList.remove('hidden');
+        } else {
+            if(themeToggleDarkIconAdmin) themeToggleDarkIconAdmin.classList.remove('hidden');
+        }
+        var themeToggleBtnAdmin = document.getElementById('theme-toggle-admin');
+        if(themeToggleBtnAdmin) {
+            themeToggleBtnAdmin.addEventListener('click', function() {
+                themeToggleDarkIconAdmin.classList.toggle('hidden');
+                themeToggleLightIconAdmin.classList.toggle('hidden');
+                if (localStorage.getItem('color-theme')) {
+                    if (localStorage.getItem('color-theme') === 'light') {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    }
+                } else {
+                    if (document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>
 '''
@@ -154,6 +187,39 @@ LANDING_PAGE_HTML_AR = '''
             }
         });
     </script>
+<script>
+        var themeToggleDarkIconAdmin = document.getElementById('theme-toggle-dark-icon-admin');
+        var themeToggleLightIconAdmin = document.getElementById('theme-toggle-light-icon-admin');
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            if(themeToggleLightIconAdmin) themeToggleLightIconAdmin.classList.remove('hidden');
+        } else {
+            if(themeToggleDarkIconAdmin) themeToggleDarkIconAdmin.classList.remove('hidden');
+        }
+        var themeToggleBtnAdmin = document.getElementById('theme-toggle-admin');
+        if(themeToggleBtnAdmin) {
+            themeToggleBtnAdmin.addEventListener('click', function() {
+                themeToggleDarkIconAdmin.classList.toggle('hidden');
+                themeToggleLightIconAdmin.classList.toggle('hidden');
+                if (localStorage.getItem('color-theme')) {
+                    if (localStorage.getItem('color-theme') === 'light') {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    }
+                } else {
+                    if (document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>
 '''
@@ -176,8 +242,8 @@ ADMIN_HTML = '''<!DOCTYPE html>
         }
     </script>
 </head>
-<body class="bg-gray-100 font-sans">
-    <nav class="bg-white shadow-sm border-b border-gray-200">
+<body class="bg-gray-100 dark:bg-gray-900 font-sans text-gray-900 dark:text-gray-100">
+    <nav class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex-shrink-0 flex items-center">
@@ -190,7 +256,7 @@ ADMIN_HTML = '''<!DOCTYPE html>
         </div>
     </nav>
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
+        <div class="bg-white dark:bg-gray-800 shadow px-4 py-5 sm:rounded-lg sm:p-6">
             
             <div class="border-b border-gray-200 mb-6">
                 <nav class="-mb-px flex space-x-8">
@@ -211,7 +277,7 @@ ADMIN_HTML = '''<!DOCTYPE html>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
+                        <thead class="bg-gray-50 dark:bg-gray-700">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Company</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
@@ -219,15 +285,15 @@ ADMIN_HTML = '''<!DOCTYPE html>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                             {% for c in companies %}
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="font-medium text-gray-900">{{ c['name'] }}</div>
+                                    <div class="font-medium text-gray-900 dark:text-white">{{ c['name'] }}</div>
                                     <div class="text-sm text-gray-500">CR: {{ c['cr_number'] }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ c['email'] }}</div>
+                                    <div class="text-sm text-gray-900 dark:text-white">{{ c['email'] }}</div>
                                     <div class="text-sm text-gray-500">{{ c['contact_person'] }} - {{ c['phone'] }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -246,7 +312,7 @@ ADMIN_HTML = '''<!DOCTYPE html>
             {% endif %}
             
             {% if active_tab == 'edit' or active_tab == 'add' %}
-                <h2 class="text-xl font-bold mb-4">{{ 'Edit' if active_tab == 'edit' else 'Add' }} Subscriber</h2>
+                <h2 class="text-xl font-bold mb-4 dark:text-white">{{ 'Edit' if active_tab == 'edit' else 'Add' }} Subscriber</h2>
                 <form method="POST" action="{{ url_for('admin_edit', id=company['id']) if active_tab == 'edit' else url_for('admin_add') }}" class="space-y-6 max-w-2xl">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
@@ -357,8 +423,42 @@ ADMIN_HTML = '''<!DOCTYPE html>
             }
         });
     </script>
+<script>
+        var themeToggleDarkIconAdmin = document.getElementById('theme-toggle-dark-icon-admin');
+        var themeToggleLightIconAdmin = document.getElementById('theme-toggle-light-icon-admin');
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            if(themeToggleLightIconAdmin) themeToggleLightIconAdmin.classList.remove('hidden');
+        } else {
+            if(themeToggleDarkIconAdmin) themeToggleDarkIconAdmin.classList.remove('hidden');
+        }
+        var themeToggleBtnAdmin = document.getElementById('theme-toggle-admin');
+        if(themeToggleBtnAdmin) {
+            themeToggleBtnAdmin.addEventListener('click', function() {
+                themeToggleDarkIconAdmin.classList.toggle('hidden');
+                themeToggleLightIconAdmin.classList.toggle('hidden');
+                if (localStorage.getItem('color-theme')) {
+                    if (localStorage.getItem('color-theme') === 'light') {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    }
+                } else {
+                    if (document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    }
+                }
+            });
+        }
+    </script>
 </body>
-</html>'''
+</html>
+'''
 
 @app.route('/')
 def index():
