@@ -116,18 +116,18 @@ LANDING_PAGE_HTML_EN = '''
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans antialiased">
     
     <!-- Navbar -->
-    <nav class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+    <nav class="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-100 dark:border-gray-800 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex-shrink-0 flex items-center">
-                    <span class="text-2xl font-black text-blue-600 tracking-tighter">Tenders<span class="text-gray-800">Hub</span></span>
+                    <span class="text-2xl font-black text-blue-600 dark:text-blue-500 tracking-tighter">Tenders<span class="text-gray-800 dark:text-gray-100">Hub</span></span>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="{{ url_for('admin') }}" class="hidden md:block text-gray-500 hover:text-gray-900 text-sm font-medium">Admin Dashboard</a>
-                    <a href="?lang=ar" class="text-sm font-medium text-gray-500 hover:text-gray-900">عربي</a>
+                    <a href="{{ url_for('admin') }}" class="hidden md:block text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium">Admin Dashboard</a>
+                    <a href="?lang=ar" class="text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">عربي</a>
                     <a href="#subscribe" class="inline-flex items-center justify-center px-3 py-1.5 sm:px-4 sm:py-2 border border-transparent rounded-md shadow-sm text-xs sm:text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">Get Started</a>
                 </div>
             </div>
@@ -180,14 +180,14 @@ LANDING_PAGE_HTML_EN = '''
     </div>
 
     <!-- SEO & Content Section -->
-    <div class="py-16 bg-blue-50">
+    <div class="py-16 bg-blue-50 dark:bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="lg:text-center">
                 <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Saudi Arabia Government Procurement</h2>
-                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
                     Never miss a contracting opportunity
                 </p>
-                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 dark:text-gray-400 lg:mx-auto">
                     The Saudi Arabian market is expanding rapidly under Vision 2030. Navigating procurement portals like Etimad and Forsah can be time-consuming. We do the heavy lifting by scraping, translating, and curating tenders tailored to your industry, directly into your inbox.
                 </p>
             </div>
@@ -195,23 +195,23 @@ LANDING_PAGE_HTML_EN = '''
     </div>
 
     <!-- Features Section -->
-    <div id="features" class="py-16 bg-white">
+    <div id="features" class="py-16 bg-white dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm transition hover:shadow-md">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm transition hover:shadow-md">
                     <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">📊</div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">4 Daily Reports</h3>
-                    <p class="text-gray-600">Receive comprehensive PDF updates four times a day at 9 AM, 11 AM, 1 PM, and 3 PM.</p>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">4 Daily Reports</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Receive comprehensive PDF updates four times a day at 9 AM, 11 AM, 1 PM, and 3 PM.</p>
                 </div>
-                <div class="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm transition hover:shadow-md">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm transition hover:shadow-md">
                     <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">🇸🇦</div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Etimad & Forsah Coverage</h3>
-                    <p class="text-gray-600">Full coverage of the two largest government procurement and enterprise portals in Saudi Arabia.</p>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Etimad & Forsah Coverage</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Full coverage of the two largest government procurement and enterprise portals in Saudi Arabia.</p>
                 </div>
-                <div class="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm transition hover:shadow-md">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm transition hover:shadow-md">
                     <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">🌍</div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Instant Translation</h3>
-                    <p class="text-gray-600">All Arabic tenders are automatically translated into English, helping international contractors bid seamlessly.</p>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Instant Translation</h3>
+                    <p class="text-gray-600 dark:text-gray-400">All Arabic tenders are automatically translated into English, helping international contractors bid seamlessly.</p>
                 </div>
             </div>
         </div>
@@ -220,10 +220,10 @@ LANDING_PAGE_HTML_EN = '''
     <!-- Subscription Form Section -->
     <div id="subscribe" class="bg-gray-900 py-16">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-2xl shadow-xl overflow-hidden p-8 border border-blue-100">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden p-8 border border-blue-100 dark:border-gray-700">
                 <div class="text-center mb-8">
-                    <h2 class="text-3xl font-extrabold text-gray-900">Start Your 1-Week Free Trial</h2>
-                    <p class="mt-2 text-gray-600">No credit card required. Experience the full power of daily tender reports completely free for 7 days.</p>
+                    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Start Your 1-Week Free Trial</h2>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">No credit card required. Experience the full power of daily tender reports completely free for 7 days.</p>
                 </div>
                 
                 {% if success %}
@@ -244,16 +244,16 @@ LANDING_PAGE_HTML_EN = '''
                 <form method="POST" action="/subscribe" class="space-y-6">
                     <!-- Pricing Toggle -->
                     <div class="flex justify-center mb-6">
-                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 bg-gray-100 p-2 rounded-lg">
+                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 bg-gray-100 dark:bg-gray-700 p-2 rounded-lg">
                             <label class="cursor-pointer relative">
                                 <input type="radio" name="subscription_type" value="Monthly" class="peer sr-only" checked>
-                                <div class="px-4 sm:px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white text-sm sm:text-base font-medium text-gray-600 transition-colors text-center w-full sm:w-auto">
+                                <div class="px-4 sm:px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white text-sm sm:text-base font-medium text-gray-600 dark:text-gray-300 transition-colors text-center w-full sm:w-auto">
                                     Monthly Plan (100 SAR/mo after trial)
                                 </div>
                             </label>
                             <label class="cursor-pointer relative">
                                 <input type="radio" name="subscription_type" value="Annual" class="peer sr-only">
-                                <div class="px-4 sm:px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white text-sm sm:text-base font-medium text-gray-600 transition-colors text-center w-full sm:w-auto">
+                                <div class="px-4 sm:px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white text-sm sm:text-base font-medium text-gray-600 dark:text-gray-300 transition-colors text-center w-full sm:w-auto">
                                     Annual Plan (1000 SAR/yr after trial)
                                 </div>
                             </label>
@@ -262,32 +262,32 @@ LANDING_PAGE_HTML_EN = '''
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Company Name *</label>
-                            <input type="text" name="name" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Company Name *</label>
+                            <input type="text" name="name" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Email Address *</label>
-                            <input type="email" name="email" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Address *</label>
+                            <input type="email" name="email" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Phone Number *</label>
-                            <input type="text" name="phone" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Phone Number *</label>
+                            <input type="text" name="phone" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">CR Number</label>
-                            <input type="text" name="cr_number" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">CR Number</label>
+                            <input type="text" name="cr_number" class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Contact Person *</label>
-                            <input type="text" name="contact_person" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Person *</label>
+                            <input type="text" name="contact_person" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Industry / Category</label>
-                            <input type="text" name="industry" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Industry / Category</label>
+                            <input type="text" name="industry" class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
                         </div>
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700">Preferred Language</label>
-                            <select name="language" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Preferred Language</label>
+                            <select name="language" class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
                                 <option value="English">English</option>
                                 <option value="Arabic">Arabic</option>
                             </select>
@@ -363,18 +363,18 @@ LANDING_PAGE_HTML_AR = '''
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans antialiased">
     
     <!-- Navbar -->
-    <nav class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+    <nav class="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-100 dark:border-gray-800 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex-shrink-0 flex items-center">
-                    <span class="text-2xl font-black text-blue-600 tracking-tighter">Tenders<span class="text-gray-800">Hub</span></span>
+                    <span class="text-2xl font-black text-blue-600 dark:text-blue-500 tracking-tighter">Tenders<span class="text-gray-800 dark:text-gray-100">Hub</span></span>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="{{ url_for('admin') }}" class="hidden md:block text-gray-500 hover:text-gray-900 text-sm font-medium">لوحة الإدارة</a>
-                    <a href="?lang=en" class="text-sm font-medium text-gray-500 hover:text-gray-900">English</a>
+                    <a href="{{ url_for('admin') }}" class="hidden md:block text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium">لوحة الإدارة</a>
+                    <a href="?lang=en" class="text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">English</a>
                     <a href="#subscribe" class="inline-flex items-center justify-center px-3 py-1.5 sm:px-4 sm:py-2 border border-transparent rounded-md shadow-sm text-xs sm:text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">ابدأ الآن</a>
                 </div>
             </div>
@@ -427,14 +427,14 @@ LANDING_PAGE_HTML_AR = '''
     </div>
 
     <!-- SEO & Content Section -->
-    <div class="py-16 bg-blue-50">
+    <div class="py-16 bg-blue-50 dark:bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="lg:text-center">
                 <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">المشتريات الحكومية في السعودية</h2>
-                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
                     لا تفوت أي فرصة تعاقد
                 </p>
-                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 dark:text-gray-400 lg:mx-auto">
                     السوق السعودي يتوسع بسرعة في ظل رؤية 2030. تصفح المنصات مثل اعتماد وفرصة يستغرق وقتاً طويلاً. نحن نقوم بالعمل الشاق من خلال استخراج وترجمة وتنسيق المناقصات وإرسالها مباشرة إلى بريدك.
                 </p>
             </div>
@@ -442,23 +442,23 @@ LANDING_PAGE_HTML_AR = '''
     </div>
 
     <!-- Features Section -->
-    <div id="features" class="py-16 bg-white">
+    <div id="features" class="py-16 bg-white dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm transition hover:shadow-md">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm transition hover:shadow-md">
                     <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">📊</div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">4 تقارير يومية</h3>
-                    <p class="text-gray-600">احصل على تحديثات شاملة 4 مرات يومياً.</p>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">4 تقارير يومية</h3>
+                    <p class="text-gray-600 dark:text-gray-400">احصل على تحديثات شاملة 4 مرات يومياً.</p>
                 </div>
-                <div class="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm transition hover:shadow-md">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm transition hover:shadow-md">
                     <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">🇸🇦</div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">تغطية شاملة لاعتماد وفرصة</h3>
-                    <p class="text-gray-600">تغطية كاملة لأكبر منصات المشتريات الحكومية في المملكة.</p>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">تغطية شاملة لاعتماد وفرصة</h3>
+                    <p class="text-gray-600 dark:text-gray-400">تغطية كاملة لأكبر منصات المشتريات الحكومية في المملكة.</p>
                 </div>
-                <div class="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm transition hover:shadow-md">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm transition hover:shadow-md">
                     <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">🌍</div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">ترجمة فورية</h3>
-                    <p class="text-gray-600">تتم ترجمة جميع المناقصات تلقائياً لتسهيل العمل.</p>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">ترجمة فورية</h3>
+                    <p class="text-gray-600 dark:text-gray-400">تتم ترجمة جميع المناقصات تلقائياً لتسهيل العمل.</p>
                 </div>
             </div>
         </div>
@@ -467,10 +467,10 @@ LANDING_PAGE_HTML_AR = '''
     <!-- Subscription Form Section -->
     <div id="subscribe" class="bg-gray-900 py-16">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-2xl shadow-xl overflow-hidden p-8 border border-blue-100">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden p-8 border border-blue-100 dark:border-gray-700">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl font-extrabold text-gray-900">ابدأ تجربتك المجانية لمدة أسبوع</h2>
-                    <p class="mt-2 text-gray-600">No credit card required. Experience the full power of تقارير المناقصات اليومية completely free for 7 days.</p>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">No credit card required. Experience the full power of تقارير المناقصات اليومية completely free for 7 days.</p>
                 </div>
                 
                 {% if success %}
@@ -491,16 +491,16 @@ LANDING_PAGE_HTML_AR = '''
                 <form method="POST" action="/subscribe" class="space-y-6">
                     <!-- Pricing Toggle -->
                     <div class="flex justify-center mb-6">
-                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 bg-gray-100 p-2 rounded-lg">
+                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 bg-gray-100 dark:bg-gray-700 p-2 rounded-lg">
                             <label class="cursor-pointer relative">
                                 <input type="radio" name="subscription_type" value="Monthly" class="peer sr-only" checked>
-                                <div class="px-4 sm:px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white text-sm sm:text-base font-medium text-gray-600 transition-colors text-center w-full sm:w-auto">
+                                <div class="px-4 sm:px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white text-sm sm:text-base font-medium text-gray-600 dark:text-gray-300 transition-colors text-center w-full sm:w-auto">
                                     الباقة الشهرية (100 ريال شهرياً بعد التجربة)
                                 </div>
                             </label>
                             <label class="cursor-pointer relative">
                                 <input type="radio" name="subscription_type" value="Annual" class="peer sr-only">
-                                <div class="px-4 sm:px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white text-sm sm:text-base font-medium text-gray-600 transition-colors text-center w-full sm:w-auto">
+                                <div class="px-4 sm:px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white text-sm sm:text-base font-medium text-gray-600 dark:text-gray-300 transition-colors text-center w-full sm:w-auto">
                                     الباقة السنوية (1000 ريال سنوياً بعد التجربة)
                                 </div>
                             </label>
@@ -509,32 +509,32 @@ LANDING_PAGE_HTML_AR = '''
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">اسم الشركة *</label>
-                            <input type="text" name="name" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">اسم الشركة *</label>
+                            <input type="text" name="name" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">البريد الإلكتروني *</label>
-                            <input type="email" name="email" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">البريد الإلكتروني *</label>
+                            <input type="email" name="email" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">رقم الجوال *</label>
-                            <input type="text" name="phone" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">رقم الجوال *</label>
+                            <input type="text" name="phone" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">رقم السجل التجاري</label>
-                            <input type="text" name="cr_number" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">رقم السجل التجاري</label>
+                            <input type="text" name="cr_number" class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">الشخص المسؤول *</label>
-                            <input type="text" name="contact_person" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">الشخص المسؤول *</label>
+                            <input type="text" name="contact_person" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">مجال العمل / التصنيف</label>
-                            <input type="text" name="industry" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">مجال العمل / التصنيف</label>
+                            <input type="text" name="industry" class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
                         </div>
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700">اللغة المفضلة للتقارير</label>
-                            <select name="language" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">اللغة المفضلة للتقارير</label>
+                            <select name="language" class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
                                 <option value="الإنجليزية">الإنجليزية</option>
                                 <option value="العربية">العربية</option>
                             </select>
@@ -573,10 +573,10 @@ ADMIN_HTML = '''<!DOCTYPE html>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex-shrink-0 flex items-center">
-                    <span class="text-2xl font-black text-blue-600 tracking-tighter">Tenders<span class="text-gray-800">Hub</span> <span class="text-sm font-normal text-gray-500 ml-2">Admin</span></span>
+                    <span class="text-2xl font-black text-blue-600 dark:text-blue-500 tracking-tighter">Tenders<span class="text-gray-800 dark:text-gray-100">Hub</span> <span class="text-sm font-normal text-gray-500 ml-2">Admin</span></span>
                 </div>
                 <div>
-                    <a href="{{ url_for('index') }}" class="text-sm font-medium text-gray-500 hover:text-gray-900">View Live Site</a>
+                    <a href="{{ url_for('index') }}" class="text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">View Live Site</a>
                 </div>
             </div>
         </div>
@@ -642,38 +642,38 @@ ADMIN_HTML = '''<!DOCTYPE html>
                 <form method="POST" action="{{ url_for('admin_edit', id=company['id']) if active_tab == 'edit' else url_for('admin_add') }}" class="space-y-6 max-w-2xl">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Company Name</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Company Name</label>
                             <input type="text" name="name" value="{{ company['name'] if company else '' }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Email Address</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</label>
                             <input type="email" name="email" value="{{ company['email'] if company else '' }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Phone Number</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Phone Number</label>
                             <input type="text" name="phone" value="{{ company['phone'] if company else '' }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Contact Person</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Person</label>
                             <input type="text" name="contact_person" value="{{ company['contact_person'] if company else '' }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">CR Number</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">CR Number</label>
                             <input type="text" name="cr_number" value="{{ company['cr_number'] if company else '' }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Industry / Category</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Industry / Category</label>
                             <input type="text" name="industry" value="{{ company['industry'] if company else '' }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Language</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Language</label>
                             <select name="language" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
                                 <option value="English" {% if company and company['language'] == 'English' %}selected{% endif %}>English</option>
                                 <option value="Arabic" {% if company and company['language'] == 'Arabic' %}selected{% endif %}>Arabic</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Subscription Type</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Subscription Type</label>
                             <select name="subscription_type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
                                 <option value="Monthly" {% if company and company['subscription_type'] == 'Monthly' %}selected{% endif %}>Monthly</option>
                                 <option value="Annual" {% if company and company['subscription_type'] == 'Annual' %}selected{% endif %}>Annual</option>
@@ -692,23 +692,23 @@ ADMIN_HTML = '''<!DOCTYPE html>
             {% if active_tab == 'settings' %}
                 <form method="POST" action="{{ url_for('save_settings') }}" class="space-y-6 max-w-2xl">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">SMTP Host</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">SMTP Host</label>
                         <input type="text" name="smtp_host" value="{{ config_data.get('smtp_host', '') }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">SMTP Port</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">SMTP Port</label>
                         <input type="text" name="smtp_port" value="{{ config_data.get('smtp_port', '') }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">SMTP Username</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">SMTP Username</label>
                         <input type="text" name="smtp_user" value="{{ config_data.get('smtp_user', '') }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">SMTP Password</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">SMTP Password</label>
                         <input type="password" name="smtp_pass" value="{{ config_data.get('smtp_pass', '') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">From Email Address</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">From Email Address</label>
                         <input type="email" name="email_from" value="{{ config_data.get('email_from', '') }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
                     </div>
                     <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
