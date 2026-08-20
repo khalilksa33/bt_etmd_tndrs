@@ -67,7 +67,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-LANDING_PAGE_HTML = '''
+LANDING_PAGE_HTML_EN = '''
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -126,6 +126,7 @@ LANDING_PAGE_HTML = '''
                 </div>
                 <div class="flex items-center space-x-4">
                     <a href="{{ url_for('admin') }}" class="text-gray-500 hover:text-gray-900 text-sm font-medium">Admin Dashboard</a>
+                    <a href="?lang=ar" class="text-sm font-medium text-gray-500 hover:text-gray-900">عربي</a>
                     <a href="#subscribe" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">Get Started</a>
                 </div>
             </div>
@@ -268,16 +269,16 @@ LANDING_PAGE_HTML = '''
                             <input type="email" name="email" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Phone Number</label>
-                            <input type="text" name="phone" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                            <label class="block text-sm font-medium text-gray-700">Phone Number *</label>
+                            <input type="text" name="phone" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">CR Number</label>
                             <input type="text" name="cr_number" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Contact Person</label>
-                            <input type="text" name="contact_person" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                            <label class="block text-sm font-medium text-gray-700">Contact Person *</label>
+                            <input type="text" name="contact_person" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Industry / Category</label>
@@ -307,6 +308,253 @@ LANDING_PAGE_HTML = '''
             <span class="text-xl font-black text-gray-400 tracking-tighter mb-4">Tenders<span class="text-white">Hub</span></span>
             <p class="text-gray-500 text-sm mb-4">Connecting your business with the best procurement opportunities in Saudi Arabia.</p>
             <p class="text-gray-600 text-xs">&copy; 2026 TendersHub. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
+'''
+
+LANDING_PAGE_HTML_AR = '''
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Get تقارير المناقصات اليومية from Forsah.sa and Etimad.sa. Never miss a government procurement or contracting opportunity in Saudi Arabia. Translated and delivered to your inbox 4 times a day.">
+    <meta name="keywords" content="Saudi Arabia Tenders, Etimad tenders, Forsah tenders, KSA government contracts, B2B procurement, contracting opportunities, business in Saudi Arabia">
+    <title>Tenders Report - Daily Forsah & Etimad Updates</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hero-bg {
+            background-color: #0f172a;
+            background-image: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+        }
+        /* CSS Slider */
+        .slider {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 1rem;
+            position: relative;
+        }
+        .slides {
+            display: flex;
+            width: 400%;
+            height: 100%;
+            animation: slide 20s infinite;
+        }
+        .slide {
+            width: 25%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        @keyframes slide {
+            0% { transform: translateX(0%); }
+            20% { transform: translateX(0%); }
+            25% { transform: translateX(-25%); }
+            45% { transform: translateX(-25%); }
+            50% { transform: translateX(-50%); }
+            70% { transform: translateX(-50%); }
+            75% { transform: translateX(-75%); }
+            95% { transform: translateX(-75%); }
+            100% { transform: translateX(0%); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+    
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-black text-blue-600 tracking-tighter">Tenders<span class="text-gray-800">Hub</span></span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="{{ url_for('admin') }}" class="text-gray-500 hover:text-gray-900 text-sm font-medium">لوحة الإدارة</a>
+                    <a href="?lang=en" class="text-sm font-medium text-gray-500 hover:text-gray-900">English</a>
+                    <a href="#subscribe" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">ابدأ الآن</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-bg relative overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="relative z-10 pb-12 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32 pt-20">
+                <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+                    <div class="sm:text-center lg:text-right">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold text-blue-100 bg-blue-900 mb-4">
+                            🚀 🚀 المنصة الأولى للتنبيه بالمناقصات للشركات في السعودية
+                        </span>
+                        <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
+                            <span class="block xl:inline">اربح المزيد من العقود مع</span>
+                            <span class="block text-blue-400 xl:inline">تقارير المناقصات اليومية</span>
+                        </h1>
+                        <p class="mt-3 text-base text-gray-300 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                            توقف عن البحث اليدوي عن العقود الحكومية. احصل على تقارير يومية منسقة بصيغة PDF مباشرة إلى بريدك الإلكتروني لأحدث الفرص من <strong>منصة فرصة</strong> و<strong>اعتماد</strong>.
+                        </p>
+                        <div class="mt-8 sm:flex sm:justify-center lg:justify-start">
+                            <div class="rounded-md shadow">
+                                <a href="#subscribe" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-900 bg-blue-100 hover:bg-blue-200 md:py-4 md:text-lg md:px-10 transition duration-150">
+                                    ابدأ تجربتك المجانية لمدة 7 أيام
+                                </a>
+                            </div>
+                            <div class="mt-3 sm:mt-0 sm:ml-3">
+                                <a href="#features" class="w-full flex items-center justify-center px-8 py-3 border border-gray-600 text-base font-medium rounded-md text-gray-300 bg-transparent hover:bg-gray-800 md:py-4 md:text-lg md:px-10 transition duration-150">
+                                    اعرف المزيد
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+        <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 flex items-center justify-center p-8 lg:p-12 lg:mt-0 hidden lg:flex">
+            <!-- Project Image Slider -->
+            <div class="slider shadow-2xl border-4 border-gray-800">
+                <div class="slides">
+                    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1541888086925-0c13d4f40f0c?auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80');"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEO & Content Section -->
+    <div class="py-16 bg-blue-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">المشتريات الحكومية في السعودية</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    لا تفوت أي فرصة تعاقد
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                    السوق السعودي يتوسع بسرعة في ظل رؤية 2030. تصفح المنصات مثل اعتماد وفرصة يستغرق وقتاً طويلاً. نحن نقوم بالعمل الشاق من خلال استخراج وترجمة وتنسيق المناقصات وإرسالها مباشرة إلى بريدك.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div id="features" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm transition hover:shadow-md">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">📊</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">4 تقارير يومية</h3>
+                    <p class="text-gray-600">احصل على تحديثات شاملة 4 مرات يومياً.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm transition hover:shadow-md">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">🇸🇦</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">تغطية شاملة لاعتماد وفرصة</h3>
+                    <p class="text-gray-600">تغطية كاملة لأكبر منصات المشتريات الحكومية في المملكة.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm transition hover:shadow-md">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">🌍</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">ترجمة فورية</h3>
+                    <p class="text-gray-600">تتم ترجمة جميع المناقصات تلقائياً لتسهيل العمل.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subscription Form Section -->
+    <div id="subscribe" class="bg-gray-900 py-16">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden p-8 border border-blue-100">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-extrabold text-gray-900">ابدأ تجربتك المجانية لمدة أسبوع</h2>
+                    <p class="mt-2 text-gray-600">No credit card required. Experience the full power of تقارير المناقصات اليومية completely free for 7 days.</p>
+                </div>
+                
+                {% if success %}
+                <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-8">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <span class="text-green-400">✓</span>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-green-700 font-medium">
+                                نجاح! بدأت تجربتك المجانية لمدة 7 أيام. سيتواصل معك مندوبنا قريباً.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <form method="POST" action="/subscribe" class="space-y-6">
+                    <!-- Pricing Toggle -->
+                    <div class="flex justify-center mb-6">
+                        <div class="flex space-x-4 bg-gray-100 p-1 rounded-lg">
+                            <label class="cursor-pointer relative">
+                                <input type="radio" name="subscription_type" value="Monthly" class="peer sr-only" checked>
+                                <div class="px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white font-medium text-gray-600 transition-colors">
+                                    الباقة الشهرية (100 ريال شهرياً بعد التجربة)
+                                </div>
+                            </label>
+                            <label class="cursor-pointer relative">
+                                <input type="radio" name="subscription_type" value="Annual" class="peer sr-only">
+                                <div class="px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white font-medium text-gray-600 transition-colors">
+                                    الباقة السنوية (1000 ريال سنوياً بعد التجربة)
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">اسم الشركة *</label>
+                            <input type="text" name="name" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">البريد الإلكتروني *</label>
+                            <input type="email" name="email" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">رقم الجوال *</label>
+                            <input type="text" name="phone" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">رقم السجل التجاري</label>
+                            <input type="text" name="cr_number" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">الشخص المسؤول *</label>
+                            <input type="text" name="contact_person" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">مجال العمل / التصنيف</label>
+                            <input type="text" name="industry" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700">اللغة المفضلة للتقارير</label>
+                            <select name="language" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50">
+                                <option value="الإنجليزية">الإنجليزية</option>
+                                <option value="العربية">العربية</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="pt-4">
+                        <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150">
+                            ابدأ تجربتك المجانية لمدة 7 أيام
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-8 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+            <span class="text-xl font-black text-gray-400 tracking-tighter mb-4">Tenders<span class="text-white">Hub</span></span>
+            <p class="text-gray-500 text-sm mb-4">Connecting your business with the best procurement opportunities in Saudi Arabia.</p>
+            <p class="text-gray-600 text-xs">&copy; 2026 تندرز هب. All rights reserved.</p>
         </div>
     </footer>
 </body>
@@ -420,7 +668,9 @@ ADMIN_HTML = '''
 def index():
     init_db()
     success = request.args.get('success') == '1'
-    return render_template_string(LANDING_PAGE_HTML, success=success)
+    lang = request.args.get('lang', 'en')
+    html_template = LANDING_PAGE_HTML_AR if lang == 'ar' else LANDING_PAGE_HTML_EN
+    return render_template_string(html_template, success=success)
 
 @app.route('/subscribe', methods=['POST'])
 def subscribe():
