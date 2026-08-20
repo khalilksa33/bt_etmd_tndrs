@@ -513,7 +513,7 @@ def main():
             c_email = company["email"]
             c_logo = os.path.join("logos", company["logo"]) if company["logo"] else None
             
-            company_pdf_name = f"forsah_tenders_report_{today}_{c_name.replace(' ', '_')}.pdf"
+            company_pdf_name = os.path.join(report_dir, f"forsah_tenders_report_{today}_{c_name.replace(' ', '_')}.pdf")
             print(f"📄 Building Forsah PDF for {c_name}: {company_pdf_name}")
             build_pdf(rows, company_pdf_name, company_name=c_name, logo_path=c_logo)
             
@@ -524,7 +524,7 @@ def main():
                 print(f"❌ Failed to send to {c_email}: {e}")
     else:
         print("⚠️ No companies found in the database. Generating default PDF.")
-        pdf_name = f"forsah_tenders_report_{today}.pdf"
+        pdf_name = os.path.join(report_dir, f"forsah_tenders_report_{today}.pdf")
         build_pdf(rows, pdf_name)
 
 
