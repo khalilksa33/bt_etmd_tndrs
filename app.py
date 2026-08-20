@@ -752,7 +752,7 @@ def subscribe():
         # Trigger immediate test report for new subscriber
         try:
             # We assume it runs from the project root
-            subprocess.Popen(["venv/bin/python3", "forsah_tenders.py", "--email", email])
+            subprocess.Popen(f"venv/bin/python3 forsah_tenders.py --email '{email}' >> test_report.log 2>&1", shell=True)
         except Exception as e:
             print("Failed to trigger report:", e)
     except sqlite3.IntegrityError:
@@ -867,5 +867,6 @@ def admin_edit(id):
 if __name__ == '__main__':
     init_db()
     app.run(host='0.0.0.0', port=5000)
+
 
 
