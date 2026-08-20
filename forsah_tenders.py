@@ -496,6 +496,8 @@ def main():
     with open(reported_file, 'w', encoding='utf-8') as f:
         json.dump({row[5]: row for row in rows}, f, indent=2, ensure_ascii=False)
     today = datetime.now().strftime("%Y%m%d")
+    report_dir = os.path.join('reports', today)
+    os.makedirs(report_dir, exist_ok=True)
     conn = sqlite3.connect(DATABASE_PATH)
     conn.row_factory = sqlite3.Row
     try:
