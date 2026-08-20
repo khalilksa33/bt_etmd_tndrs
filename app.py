@@ -561,8 +561,7 @@ LANDING_PAGE_HTML_AR = '''
 </html>
 '''
 
-ADMIN_HTML = '''
-<!DOCTYPE html>
+ADMIN_HTML = '''<!DOCTYPE html>
 <html>
 <head>
     <title>Admin Dashboard</title>
@@ -589,71 +588,18 @@ ADMIN_HTML = '''
                     <a href="{{ url_for('admin') }}" class="{% if active_tab == 'companies' %}border-blue-500 text-blue-600{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
                         Subscribers
                     </a>
-                    <a href="{{ url_for('admin_settings') }}" class="
-            {% if active_tab == 'edit' or active_tab == 'add' %}
-                <h2 class="text-xl font-bold mb-4">{{ 'Edit' if active_tab == 'edit' else 'Add' }} Subscriber</h2>
-                <form method="POST" action="{{ url_for('admin_edit', id=company['id']) if active_tab == 'edit' else url_for('admin_add') }}" class="space-y-6 max-w-2xl">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Company Name</label>
-                            <input type="text" name="name" value="{{ company['name'] if company else '' }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Email Address</label>
-                            <input type="email" name="email" value="{{ company['email'] if company else '' }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Phone Number</label>
-                            <input type="text" name="phone" value="{{ company['phone'] if company else '' }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Contact Person</label>
-                            <input type="text" name="contact_person" value="{{ company['contact_person'] if company else '' }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">CR Number</label>
-                            <input type="text" name="cr_number" value="{{ company['cr_number'] if company else '' }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Industry / Category</label>
-                            <input type="text" name="industry" value="{{ company['industry'] if company else '' }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Language</label>
-                            <select name="language" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
-                                <option value="English" {% if company and company['language'] == 'English' %}selected{% endif %}>English</option>
-                                <option value="Arabic" {% if company and company['language'] == 'Arabic' %}selected{% endif %}>Arabic</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Subscription Type</label>
-                            <select name="subscription_type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
-                                <option value="Monthly" {% if company and company['subscription_type'] == 'Monthly' %}selected{% endif %}>Monthly</option>
-                                <option value="Annual" {% if company and company['subscription_type'] == 'Annual' %}selected{% endif %}>Annual</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        Save Subscriber
-                    </button>
-                    <a href="{{ url_for('admin') }}" class="ml-4 text-gray-600 hover:text-gray-900">Cancel</a>
-                </form>
-            {% endif %}
-    
-            {% if active_tab == 'settings' %}border-blue-500 text-blue-600{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
+                    <a href="{{ url_for('admin_settings') }}" class="{% if active_tab == 'settings' %}border-blue-500 text-blue-600{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
                         SMTP Settings
                     </a>
                 </nav>
             </div>
 
             {% if active_tab == 'companies' %}
-                
                 <div class="mb-4 flex justify-end">
                     <a href="{{ url_for('admin_add') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         + Add Subscriber
                     </a>
                 </div>
-    
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
@@ -689,7 +635,6 @@ ADMIN_HTML = '''
                     </table>
                 </div>
             {% endif %}
-
             
             {% if active_tab == 'edit' or active_tab == 'add' %}
                 <h2 class="text-xl font-bold mb-4">{{ 'Edit' if active_tab == 'edit' else 'Add' }} Subscriber</h2>
@@ -734,13 +679,15 @@ ADMIN_HTML = '''
                             </select>
                         </div>
                     </div>
-                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        Save Subscriber
-                    </button>
-                    <a href="{{ url_for('admin') }}" class="ml-4 text-gray-600 hover:text-gray-900">Cancel</a>
+                    <div class="mt-4 flex items-center">
+                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Save Subscriber
+                        </button>
+                        <a href="{{ url_for('admin') }}" class="ml-4 text-gray-600 hover:text-gray-900 font-medium">Cancel</a>
+                    </div>
                 </form>
             {% endif %}
-    
+
             {% if active_tab == 'settings' %}
                 <form method="POST" action="{{ url_for('save_settings') }}" class="space-y-6 max-w-2xl">
                     <div>
@@ -771,8 +718,7 @@ ADMIN_HTML = '''
         </div>
     </div>
 </body>
-</html>
-'''
+</html>'''
 
 @app.route('/')
 def index():
