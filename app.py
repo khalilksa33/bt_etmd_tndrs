@@ -125,9 +125,9 @@ LANDING_PAGE_HTML_EN = '''
                     <span class="text-2xl font-black text-blue-600 tracking-tighter">Tenders<span class="text-gray-800">Hub</span></span>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="{{ url_for('admin') }}" class="text-gray-500 hover:text-gray-900 text-sm font-medium">Admin Dashboard</a>
+                    <a href="{{ url_for('admin') }}" class="hidden md:block text-gray-500 hover:text-gray-900 text-sm font-medium">Admin Dashboard</a>
                     <a href="?lang=ar" class="text-sm font-medium text-gray-500 hover:text-gray-900">عربي</a>
-                    <a href="#subscribe" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">Get Started</a>
+                    <a href="#subscribe" class="inline-flex items-center justify-center px-3 py-1.5 sm:px-4 sm:py-2 border border-transparent rounded-md shadow-sm text-xs sm:text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">Get Started</a>
                 </div>
             </div>
         </div>
@@ -372,9 +372,9 @@ LANDING_PAGE_HTML_AR = '''
                     <span class="text-2xl font-black text-blue-600 tracking-tighter">Tenders<span class="text-gray-800">Hub</span></span>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="{{ url_for('admin') }}" class="text-gray-500 hover:text-gray-900 text-sm font-medium">لوحة الإدارة</a>
+                    <a href="{{ url_for('admin') }}" class="hidden md:block text-gray-500 hover:text-gray-900 text-sm font-medium">لوحة الإدارة</a>
                     <a href="?lang=en" class="text-sm font-medium text-gray-500 hover:text-gray-900">English</a>
-                    <a href="#subscribe" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">ابدأ الآن</a>
+                    <a href="#subscribe" class="inline-flex items-center justify-center px-3 py-1.5 sm:px-4 sm:py-2 border border-transparent rounded-md shadow-sm text-xs sm:text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">ابدأ الآن</a>
                 </div>
             </div>
         </div>
