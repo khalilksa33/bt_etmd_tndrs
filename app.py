@@ -46,7 +46,8 @@ def init_db():
             contact_person TEXT,
             cr_number TEXT,
             industry TEXT,
-            language TEXT
+            language TEXT,
+            subscription_type TEXT
         )
     ''')
     conn.execute('''
@@ -57,7 +58,7 @@ def init_db():
     ''')
     
     # Add new columns if they don't exist
-    for col in ['phone', 'contact_person', 'cr_number', 'industry', 'language']:
+    for col in ['phone', 'contact_person', 'cr_number', 'industry', 'language', 'subscription_type']:
         try:
             conn.execute(f'ALTER TABLE companies ADD COLUMN {col} TEXT')
         except sqlite3.OperationalError:
@@ -66,13 +67,14 @@ def init_db():
     conn.commit()
     conn.close()
 
-
 LANDING_PAGE_HTML = '''
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Get daily tender reports from Forsah.sa and Etimad.sa. Never miss a government procurement or contracting opportunity in Saudi Arabia. Translated and delivered to your inbox 4 times a day.">
+    <meta name="keywords" content="Saudi Arabia Tenders, Etimad tenders, Forsah tenders, KSA government contracts, B2B procurement, contracting opportunities, business in Saudi Arabia">
     <title>Tenders Report - Daily Forsah & Etimad Updates</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -80,18 +82,50 @@ LANDING_PAGE_HTML = '''
             background-color: #0f172a;
             background-image: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
         }
+        /* CSS Slider */
+        .slider {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 1rem;
+            position: relative;
+        }
+        .slides {
+            display: flex;
+            width: 400%;
+            height: 100%;
+            animation: slide 20s infinite;
+        }
+        .slide {
+            width: 25%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        @keyframes slide {
+            0% { transform: translateX(0%); }
+            20% { transform: translateX(0%); }
+            25% { transform: translateX(-25%); }
+            45% { transform: translateX(-25%); }
+            50% { transform: translateX(-50%); }
+            70% { transform: translateX(-50%); }
+            75% { transform: translateX(-75%); }
+            95% { transform: translateX(-75%); }
+            100% { transform: translateX(0%); }
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased">
     
     <!-- Navbar -->
-    <nav class="bg-white shadow-sm border-b border-gray-100">
+    <nav class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex-shrink-0 flex items-center">
                     <span class="text-2xl font-black text-blue-600 tracking-tighter">Tenders<span class="text-gray-800">Hub</span></span>
                 </div>
-                <div>
+                <div class="flex items-center space-x-4">
+                    <a href="{{ url_for('admin') }}" class="text-gray-500 hover:text-gray-900 text-sm font-medium">Admin Dashboard</a>
                     <a href="#subscribe" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">Get Started</a>
                 </div>
             </div>
@@ -105,24 +139,24 @@ LANDING_PAGE_HTML = '''
                 <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
                     <div class="sm:text-center lg:text-left">
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold text-blue-100 bg-blue-900 mb-4">
-                            🚀 The #1 B2B Tender Alert Platform
+                            🚀 The #1 B2B Tender Alert Platform in KSA
                         </span>
                         <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
                             <span class="block xl:inline">Win more contracts with</span>
                             <span class="block text-blue-400 xl:inline">daily tender reports</span>
                         </h1>
                         <p class="mt-3 text-base text-gray-300 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                            Stop manually checking for government contracts. Get four beautifully formatted, fully translated daily PDF reports straight to your inbox featuring the latest opportunities from <strong>Forsah.sa</strong> and <strong>Etimad.sa</strong>.
+                            Stop manually checking for government contracts. Get beautifully formatted, fully translated daily PDF reports straight to your inbox featuring the latest opportunities from <strong>Forsah.sa</strong> and <strong>Etimad.sa</strong>.
                         </p>
                         <div class="mt-8 sm:flex sm:justify-center lg:justify-start">
                             <div class="rounded-md shadow">
                                 <a href="#subscribe" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-900 bg-blue-100 hover:bg-blue-200 md:py-4 md:text-lg md:px-10 transition duration-150">
-                                    Subscribe for Free
+                                    Subscribe Now
                                 </a>
                             </div>
                             <div class="mt-3 sm:mt-0 sm:ml-3">
                                 <a href="#features" class="w-full flex items-center justify-center px-8 py-3 border border-gray-600 text-base font-medium rounded-md text-gray-300 bg-transparent hover:bg-gray-800 md:py-4 md:text-lg md:px-10 transition duration-150">
-                                    View Features
+                                    Learn More
                                 </a>
                             </div>
                         </div>
@@ -130,52 +164,64 @@ LANDING_PAGE_HTML = '''
                 </main>
             </div>
         </div>
-        <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 flex items-center justify-center p-8 lg:p-0 mt-8 lg:mt-0 hidden lg:block opacity-20">
-             <svg viewBox="0 0 100 100" class="w-full h-full fill-current text-blue-500" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="50" r="40" />
-             </svg>
+        <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 flex items-center justify-center p-8 lg:p-12 lg:mt-0 hidden lg:flex">
+            <!-- Project Image Slider -->
+            <div class="slider shadow-2xl border-4 border-gray-800">
+                <div class="slides">
+                    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1541888086925-0c13d4f40f0c?auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80');"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEO & Content Section -->
+    <div class="py-16 bg-blue-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Saudi Arabia Government Procurement</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Never miss a contracting opportunity
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                    The Saudi Arabian market is expanding rapidly under Vision 2030. Navigating procurement portals like Etimad and Forsah can be time-consuming. We do the heavy lifting by scraping, translating, and curating tenders tailored to your industry, directly into your inbox.
+                </p>
+            </div>
         </div>
     </div>
 
     <!-- Features Section -->
     <div id="features" class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Features</h2>
-                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                    Everything you need to win bids
-                </p>
-            </div>
-
-            <div class="mt-16">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm">
-                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">📊</div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">4 Daily Reports</h3>
-                        <p class="text-gray-600">Receive comprehensive updates four times a day at 9 AM, 11 AM, 1 PM, and 3 PM.</p>
-                    </div>
-                    <div class="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm">
-                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">🇸🇦</div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">Etimad & Forsah</h3>
-                        <p class="text-gray-600">Full coverage of the two largest government procurement portals in Saudi Arabia.</p>
-                    </div>
-                    <div class="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm">
-                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">🌍</div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">Auto-Translation</h3>
-                        <p class="text-gray-600">All tenders are automatically translated into English for international contractors.</p>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm transition hover:shadow-md">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">📊</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">4 Daily Reports</h3>
+                    <p class="text-gray-600">Receive comprehensive PDF updates four times a day at 9 AM, 11 AM, 1 PM, and 3 PM.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm transition hover:shadow-md">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">🇸🇦</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Etimad & Forsah Coverage</h3>
+                    <p class="text-gray-600">Full coverage of the two largest government procurement and enterprise portals in Saudi Arabia.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm transition hover:shadow-md">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">🌍</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Instant Translation</h3>
+                    <p class="text-gray-600">All Arabic tenders are automatically translated into English, helping international contractors bid seamlessly.</p>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Subscription Form Section -->
-    <div id="subscribe" class="bg-blue-50 py-16">
+    <div id="subscribe" class="bg-gray-900 py-16">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden p-8 border border-blue-100">
                 <div class="text-center mb-8">
-                    <h2 class="text-3xl font-extrabold text-gray-900">Join our mailing list</h2>
-                    <p class="mt-2 text-gray-600">Enter your company details below to start receiving daily PDFs.</p>
+                    <h2 class="text-3xl font-extrabold text-gray-900">Choose Your Plan & Subscribe</h2>
+                    <p class="mt-2 text-gray-600">Select your preferred subscription tier and enter your details.</p>
                 </div>
                 
                 {% if success %}
@@ -186,7 +232,7 @@ LANDING_PAGE_HTML = '''
                         </div>
                         <div class="ml-3">
                             <p class="text-sm text-green-700 font-medium">
-                                Success! You have been added to the mailing list.
+                                Success! Your subscription has been received. Our team will contact you shortly.
                             </p>
                         </div>
                     </div>
@@ -194,6 +240,24 @@ LANDING_PAGE_HTML = '''
                 {% endif %}
 
                 <form method="POST" action="/subscribe" class="space-y-6">
+                    <!-- Pricing Toggle -->
+                    <div class="flex justify-center mb-6">
+                        <div class="flex space-x-4 bg-gray-100 p-1 rounded-lg">
+                            <label class="cursor-pointer relative">
+                                <input type="radio" name="subscription_type" value="Monthly" class="peer sr-only" checked>
+                                <div class="px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white font-medium text-gray-600 transition-colors">
+                                    Monthly Plan
+                                </div>
+                            </label>
+                            <label class="cursor-pointer relative">
+                                <input type="radio" name="subscription_type" value="Annual" class="peer sr-only">
+                                <div class="px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white font-medium text-gray-600 transition-colors">
+                                    Annual Plan (Save 20%)
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Company Name *</label>
@@ -228,8 +292,8 @@ LANDING_PAGE_HTML = '''
                         </div>
                     </div>
                     <div class="pt-4">
-                        <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150">
-                            Start Receiving Reports
+                        <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150">
+                            Submit Subscription
                         </button>
                     </div>
                 </form>
@@ -238,9 +302,11 @@ LANDING_PAGE_HTML = '''
     </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p class="text-gray-400 text-sm">&copy; 2026 TendersHub. All rights reserved.</p>
+    <footer class="bg-gray-900 py-8 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+            <span class="text-xl font-black text-gray-400 tracking-tighter mb-4">Tenders<span class="text-white">Hub</span></span>
+            <p class="text-gray-500 text-sm mb-4">Connecting your business with the best procurement opportunities in Saudi Arabia.</p>
+            <p class="text-gray-600 text-xs">&copy; 2026 TendersHub. All rights reserved.</p>
         </div>
     </footer>
 </body>
@@ -255,9 +321,20 @@ ADMIN_HTML = '''
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans">
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-black text-blue-600 tracking-tighter">Tenders<span class="text-gray-800">Hub</span> <span class="text-sm font-normal text-gray-500 ml-2">Admin</span></span>
+                </div>
+                <div>
+                    <a href="{{ url_for('index') }}" class="text-sm font-medium text-gray-500 hover:text-gray-900">View Live Site</a>
+                </div>
+            </div>
+        </div>
+    </nav>
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
-            <h1 class="text-3xl font-bold text-gray-900 mb-6">Admin Dashboard</h1>
             
             <div class="border-b border-gray-200 mb-6">
                 <nav class="-mb-px flex space-x-8">
@@ -275,27 +352,26 @@ ADMIN_HTML = '''
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Company</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Details</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Plan & Details</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             {% for c in companies %}
                             <tr>
-                                
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="font-medium text-gray-900">{{ c['name'] }}</div>
-                                    <div class="text-sm text-gray-500">{{ c['cr_number'] }}</div>
+                                    <div class="text-sm text-gray-500">CR: {{ c['cr_number'] }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{ c['email'] }}</div>
                                     <div class="text-sm text-gray-500">{{ c['contact_person'] }} - {{ c['phone'] }}</div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ c['language'] }}
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-semibold text-blue-600">{{ c['subscription_type'] or 'Monthly' }}</div>
+                                    <div class="text-xs text-gray-500">{{ c['industry'] }} | {{ c['language'] }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <a href="{{ url_for('delete_company', id=c['id']) }}" class="text-red-600 hover:text-red-900">Delete</a>
@@ -354,22 +430,17 @@ def subscribe():
     phone = request.form.get('phone', '')
     contact = request.form.get('contact_person', '')
     cr = request.form.get('cr_number', '')
+    industry = request.form.get('industry', '')
     language = request.form.get('language', 'English')
+    sub_type = request.form.get('subscription_type', 'Monthly')
     
-    logo_filename = None
-    if 'logo' in request.files:
-        file = request.files['logo']
-        if file.filename != '':
-            logo_filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], logo_filename))
-
     conn = get_db()
     try:
         conn.execute('''
             INSERT INTO companies 
-            (name, email, logo, phone, contact_person, cr_number, language) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        ''', (name, email, logo_filename, phone, contact, cr, language))
+            (name, email, phone, contact_person, cr_number, industry, language, subscription_type) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (name, email, phone, contact, cr, industry, language, sub_type))
         conn.commit()
     except sqlite3.IntegrityError:
         pass # Email already exists
@@ -425,14 +496,6 @@ def delete_company(id):
     conn.close()
     return redirect(url_for('admin'))
 
-@app.route('/logos/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-
 if __name__ == '__main__':
     init_db()
     app.run(host='0.0.0.0', port=5000)
-
-
-
-
