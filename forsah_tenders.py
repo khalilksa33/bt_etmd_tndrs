@@ -30,11 +30,24 @@ FORSAH_API_BASE_URL = os.environ.get(
 FORSAH_PER_PAGE = int(os.environ.get("FORSAH_PER_PAGE", "50"))
 MAX_ROWS = int(os.environ.get("MAX_ROWS", "50"))
 DATABASE_PATH = os.environ.get("DATABASE_PATH", "tenders.db")
-SMTP_HOST = os.environ.get("SMTP_HOST")
-SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
-SMTP_USER = os.environ.get("SMTP_USER")
-SMTP_PASS = os.environ.get("SMTP_PASS")
-EMAIL_FROM = os.environ.get("EMAIL_FROM", SMTP_USER)
+SMTP_HOST = None
+SMTP_PORT = 587
+SMTP_USER = None
+SMTP_PASS = None
+EMAIL_FROM = None
+
+conn = sqlite3.connect(DATABASE_PATH)
+try:
+    settings_rows = conn.execute("SELECT * FROM settings").fetchall()
+    settings = {row[0]: row[1] for row in settings_rows}
+    SMTP_HOST = settings.get("smtp_host") or os.environ.get("SMTP_HOST")
+    SMTP_PORT = int(settings.get("smtp_port") or os.environ.get("SMTP_PORT", "587"))
+    SMTP_USER = settings.get("smtp_user") or os.environ.get("SMTP_USER")
+    SMTP_PASS = settings.get("smtp_pass") or os.environ.get("SMTP_PASS")
+    EMAIL_FROM = settings.get("email_from") or os.environ.get("EMAIL_FROM", SMTP_USER)
+except sqlite3.OperationalError:
+    pass
+conn.close()
 EMAIL_TO = os.environ.get("EMAIL_TO")
 REPORT_TITLE = os.environ.get("FORSAH_REPORT_TITLE", "Forsah Tenders – Daily Report")
 
