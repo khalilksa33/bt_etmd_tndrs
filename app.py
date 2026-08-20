@@ -243,16 +243,16 @@ LANDING_PAGE_HTML_EN = '''
                 <form method="POST" action="/subscribe" class="space-y-6">
                     <!-- Pricing Toggle -->
                     <div class="flex justify-center mb-6">
-                        <div class="flex space-x-4 bg-gray-100 p-1 rounded-lg">
+                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 bg-gray-100 p-2 rounded-lg">
                             <label class="cursor-pointer relative">
                                 <input type="radio" name="subscription_type" value="Monthly" class="peer sr-only" checked>
-                                <div class="px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white font-medium text-gray-600 transition-colors">
+                                <div class="px-4 sm:px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white text-sm sm:text-base font-medium text-gray-600 transition-colors text-center w-full sm:w-auto">
                                     Monthly Plan (100 SAR/mo after trial)
                                 </div>
                             </label>
                             <label class="cursor-pointer relative">
                                 <input type="radio" name="subscription_type" value="Annual" class="peer sr-only">
-                                <div class="px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white font-medium text-gray-600 transition-colors">
+                                <div class="px-4 sm:px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white text-sm sm:text-base font-medium text-gray-600 transition-colors text-center w-full sm:w-auto">
                                     Annual Plan (1000 SAR/yr after trial)
                                 </div>
                             </label>
@@ -490,16 +490,16 @@ LANDING_PAGE_HTML_AR = '''
                 <form method="POST" action="/subscribe" class="space-y-6">
                     <!-- Pricing Toggle -->
                     <div class="flex justify-center mb-6">
-                        <div class="flex space-x-4 bg-gray-100 p-1 rounded-lg">
+                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 bg-gray-100 p-2 rounded-lg">
                             <label class="cursor-pointer relative">
                                 <input type="radio" name="subscription_type" value="Monthly" class="peer sr-only" checked>
-                                <div class="px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white font-medium text-gray-600 transition-colors">
+                                <div class="px-4 sm:px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white text-sm sm:text-base font-medium text-gray-600 transition-colors text-center w-full sm:w-auto">
                                     الباقة الشهرية (100 ريال شهرياً بعد التجربة)
                                 </div>
                             </label>
                             <label class="cursor-pointer relative">
                                 <input type="radio" name="subscription_type" value="Annual" class="peer sr-only">
-                                <div class="px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white font-medium text-gray-600 transition-colors">
+                                <div class="px-4 sm:px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white text-sm sm:text-base font-medium text-gray-600 transition-colors text-center w-full sm:w-auto">
                                     الباقة السنوية (1000 ريال سنوياً بعد التجربة)
                                 </div>
                             </label>
