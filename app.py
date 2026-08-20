@@ -79,6 +79,267 @@ LANDING_PAGE_HTML_EN = '''
     <title>Tenders Report - Daily Forsah & Etimad Updates</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+    <style>
+        .hero-bg {
+            background-color: #0f172a;
+            background-image: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+        }
+        /* CSS Slider */
+        .slider {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 1rem;
+            position: relative;
+        }
+        .slides {
+            display: flex;
+            width: 400%;
+            height: 100%;
+            animation: slide 20s infinite;
+        }
+        .slide {
+            width: 25%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        @keyframes slide {
+            0% { transform: translateX(0%); }
+            20% { transform: translateX(0%); }
+            25% { transform: translateX(-25%); }
+            45% { transform: translateX(-25%); }
+            50% { transform: translateX(-50%); }
+            70% { transform: translateX(-50%); }
+            75% { transform: translateX(-75%); }
+            95% { transform: translateX(-75%); }
+            100% { transform: translateX(0%); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans antialiased">
+    
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-100 dark:border-gray-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-black text-blue-600 dark:text-blue-500 tracking-tighter">Tenders<span class="text-gray-800 dark:text-gray-100">Hub</span></span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2">
+                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+                    <a href="{{ url_for('admin') }}" class="hidden md:block text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium">Admin Dashboard</a>
+                    <a href="?lang=ar" class="text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">عربي</a>
+                    <a href="#subscribe" class="inline-flex items-center justify-center px-3 py-1.5 sm:px-4 sm:py-2 border border-transparent rounded-md shadow-sm text-xs sm:text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-bg relative overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="relative z-10 pb-12 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32 pt-20">
+                <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+                    <div class="sm:text-center lg:text-left">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold text-blue-100 bg-blue-900 mb-4">
+                            🚀 The #1 B2B Tender Alert Platform in KSA
+                        </span>
+                        <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
+                            <span class="block xl:inline">Win more contracts with</span>
+                            <span class="block text-blue-400 xl:inline">daily tender reports</span>
+                        </h1>
+                        <p class="mt-3 text-base text-gray-300 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                            Stop manually checking for government contracts. Get beautifully formatted, fully translated daily PDF reports straight to your inbox featuring the latest opportunities from <strong>Forsah.sa</strong> and <strong>Etimad.sa</strong>.
+                        </p>
+                        <div class="mt-8 sm:flex sm:justify-center lg:justify-start">
+                            <div class="rounded-md shadow">
+                                <a href="#subscribe" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-900 bg-blue-100 hover:bg-blue-200 md:py-4 md:text-lg md:px-10 transition duration-150">
+                                    Start 7-Day Free Trial
+                                </a>
+                            </div>
+                            <div class="mt-3 sm:mt-0 sm:ml-3">
+                                <a href="#features" class="w-full flex items-center justify-center px-8 py-3 border border-gray-600 text-base font-medium rounded-md text-gray-300 bg-transparent hover:bg-gray-800 md:py-4 md:text-lg md:px-10 transition duration-150">
+                                    Learn More
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+        <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 flex items-center justify-center p-8 lg:p-12 lg:mt-0 hidden lg:flex">
+            <!-- Project Image Slider -->
+            <div class="slider shadow-2xl border-4 border-gray-800">
+                <div class="slides">
+                    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1541888086925-0c13d4f40f0c?auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80');"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEO & Content Section -->
+    <div class="py-16 bg-blue-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Saudi Arabia Government Procurement</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+                    Never miss a contracting opportunity
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 dark:text-gray-400 lg:mx-auto">
+                    The Saudi Arabian market is expanding rapidly under Vision 2030. Navigating procurement portals like Etimad and Forsah can be time-consuming. We do the heavy lifting by scraping, translating, and curating tenders tailored to your industry, directly into your inbox.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div id="features" class="py-16 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm transition hover:shadow-md">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">📊</div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">4 Daily Reports</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Receive comprehensive PDF updates four times a day at 9 AM, 11 AM, 1 PM, and 3 PM.</p>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm transition hover:shadow-md">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">🇸🇦</div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Etimad & Forsah Coverage</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Full coverage of the two largest government procurement and enterprise portals in Saudi Arabia.</p>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm transition hover:shadow-md">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">🌍</div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Instant Translation</h3>
+                    <p class="text-gray-600 dark:text-gray-400">All Arabic tenders are automatically translated into English, helping international contractors bid seamlessly.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subscription Form Section -->
+    <div id="subscribe" class="bg-gray-900 py-16">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden p-8 border border-blue-100 dark:border-gray-700">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Start Your 1-Week Free Trial</h2>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">No credit card required. Experience the full power of daily tender reports completely free for 7 days.</p>
+                </div>
+                
+                {% if success %}
+                <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-8">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <span class="text-green-400">✓</span>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-green-700 font-medium">
+                                Success! Your 7-day free trial has started. Our representative will contact you shortly for further assistance.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <form method="POST" action="/subscribe" class="space-y-6">
+                    <!-- Pricing Toggle -->
+                    <div class="flex justify-center mb-6">
+                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 bg-gray-100 dark:bg-gray-700 p-2 rounded-lg">
+                            <label class="cursor-pointer relative">
+                                <input type="radio" name="subscription_type" value="Monthly" class="peer sr-only" checked>
+                                <div class="px-4 sm:px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white text-sm sm:text-base font-medium text-gray-600 dark:text-gray-300 transition-colors text-center w-full sm:w-auto">
+                                    Monthly Plan (100 SAR/mo after trial)
+                                </div>
+                            </label>
+                            <label class="cursor-pointer relative">
+                                <input type="radio" name="subscription_type" value="Annual" class="peer sr-only">
+                                <div class="px-4 sm:px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white text-sm sm:text-base font-medium text-gray-600 dark:text-gray-300 transition-colors text-center w-full sm:w-auto">
+                                    Annual Plan (1000 SAR/yr after trial)
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Company Name *</label>
+                            <input type="text" name="name" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Address *</label>
+                            <input type="email" name="email" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Phone Number *</label>
+                            <input type="text" name="phone" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">CR Number</label>
+                            <input type="text" name="cr_number" class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Person *</label>
+                            <input type="text" name="contact_person" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Industry / Category</label>
+                            <input type="text" name="industry" class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Preferred Language</label>
+                            <select name="language" class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                                <option value="English">English</option>
+                                <option value="Arabic">Arabic</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="pt-4">
+                        <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150">
+                            Start 7-Day Free Trial
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-8 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+            <span class="text-xl font-black text-gray-400 tracking-tighter mb-4">Tenders<span class="text-white">Hub</span></span>
+            <p class="text-gray-500 text-sm mb-4">Connecting your business with the best procurement opportunities in Saudi Arabia.</p>
+            <p class="text-gray-600 text-xs">&copy; 2026 TendersHub. All rights reserved.</p>
+        </div>
+    </footer>
+<script>
         var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
         var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -110,37 +371,35 @@ LANDING_PAGE_HTML_EN = '''
         });
     </script>
 <script>
-        var themeToggleDarkIconAdmin = document.getElementById('theme-toggle-dark-icon-admin');
-        var themeToggleLightIconAdmin = document.getElementById('theme-toggle-light-icon-admin');
+        var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            if(themeToggleLightIconAdmin) themeToggleLightIconAdmin.classList.remove('hidden');
+            themeToggleLightIcon.classList.remove('hidden');
         } else {
-            if(themeToggleDarkIconAdmin) themeToggleDarkIconAdmin.classList.remove('hidden');
+            themeToggleDarkIcon.classList.remove('hidden');
         }
-        var themeToggleBtnAdmin = document.getElementById('theme-toggle-admin');
-        if(themeToggleBtnAdmin) {
-            themeToggleBtnAdmin.addEventListener('click', function() {
-                themeToggleDarkIconAdmin.classList.toggle('hidden');
-                themeToggleLightIconAdmin.classList.toggle('hidden');
-                if (localStorage.getItem('color-theme')) {
-                    if (localStorage.getItem('color-theme') === 'light') {
-                        document.documentElement.classList.add('dark');
-                        localStorage.setItem('color-theme', 'dark');
-                    } else {
-                        document.documentElement.classList.remove('dark');
-                        localStorage.setItem('color-theme', 'light');
-                    }
+        var themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', function() {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
                 } else {
-                    if (document.documentElement.classList.contains('dark')) {
-                        document.documentElement.classList.remove('dark');
-                        localStorage.setItem('color-theme', 'light');
-                    } else {
-                        document.documentElement.classList.add('dark');
-                        localStorage.setItem('color-theme', 'dark');
-                    }
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
                 }
-            });
-        }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
     </script>
 </body>
 </html>
@@ -157,6 +416,267 @@ LANDING_PAGE_HTML_AR = '''
     <title>Tenders Report - Daily Forsah & Etimad Updates</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+    <style>
+        .hero-bg {
+            background-color: #0f172a;
+            background-image: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+        }
+        /* CSS Slider */
+        .slider {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 1rem;
+            position: relative;
+        }
+        .slides {
+            display: flex;
+            width: 400%;
+            height: 100%;
+            animation: slide 20s infinite;
+        }
+        .slide {
+            width: 25%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        @keyframes slide {
+            0% { transform: translateX(0%); }
+            20% { transform: translateX(0%); }
+            25% { transform: translateX(-25%); }
+            45% { transform: translateX(-25%); }
+            50% { transform: translateX(-50%); }
+            70% { transform: translateX(-50%); }
+            75% { transform: translateX(-75%); }
+            95% { transform: translateX(-75%); }
+            100% { transform: translateX(0%); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans antialiased">
+    
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-100 dark:border-gray-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-black text-blue-600 dark:text-blue-500 tracking-tighter">Tenders<span class="text-gray-800 dark:text-gray-100">Hub</span></span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2">
+                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+                    <a href="{{ url_for('admin') }}" class="hidden md:block text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium">لوحة الإدارة</a>
+                    <a href="?lang=en" class="text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">English</a>
+                    <a href="#subscribe" class="inline-flex items-center justify-center px-3 py-1.5 sm:px-4 sm:py-2 border border-transparent rounded-md shadow-sm text-xs sm:text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">ابدأ الآن</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-bg relative overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="relative z-10 pb-12 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32 pt-20">
+                <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+                    <div class="sm:text-center lg:text-right">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold text-blue-100 bg-blue-900 mb-4">
+                            🚀 🚀 المنصة الأولى للتنبيه بالمناقصات للشركات في السعودية
+                        </span>
+                        <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
+                            <span class="block xl:inline">اربح المزيد من العقود مع</span>
+                            <span class="block text-blue-400 xl:inline">تقارير المناقصات اليومية</span>
+                        </h1>
+                        <p class="mt-3 text-base text-gray-300 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                            توقف عن البحث اليدوي عن العقود الحكومية. احصل على تقارير يومية منسقة بصيغة PDF مباشرة إلى بريدك الإلكتروني لأحدث الفرص من <strong>منصة فرصة</strong> و<strong>اعتماد</strong>.
+                        </p>
+                        <div class="mt-8 sm:flex sm:justify-center lg:justify-start">
+                            <div class="rounded-md shadow">
+                                <a href="#subscribe" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-900 bg-blue-100 hover:bg-blue-200 md:py-4 md:text-lg md:px-10 transition duration-150">
+                                    ابدأ تجربتك المجانية لمدة 7 أيام
+                                </a>
+                            </div>
+                            <div class="mt-3 sm:mt-0 sm:ml-3">
+                                <a href="#features" class="w-full flex items-center justify-center px-8 py-3 border border-gray-600 text-base font-medium rounded-md text-gray-300 bg-transparent hover:bg-gray-800 md:py-4 md:text-lg md:px-10 transition duration-150">
+                                    اعرف المزيد
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+        <div class="lg:absolute lg:inset-y-0 lg:left-0 lg:w-1/2 flex items-center justify-center p-8 lg:p-12 lg:mt-0 hidden lg:flex">
+            <!-- Project Image Slider -->
+            <div class="slider shadow-2xl border-4 border-gray-800">
+                <div class="slides">
+                    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1541888086925-0c13d4f40f0c?auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80');"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEO & Content Section -->
+    <div class="py-16 bg-blue-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">المشتريات الحكومية في السعودية</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+                    لا تفوت أي فرصة تعاقد
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 dark:text-gray-400 lg:mx-auto">
+                    السوق السعودي يتوسع بسرعة في ظل رؤية 2030. تصفح المنصات مثل اعتماد وفرصة يستغرق وقتاً طويلاً. نحن نقوم بالعمل الشاق من خلال استخراج وترجمة وتنسيق المناقصات وإرسالها مباشرة إلى بريدك.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div id="features" class="py-16 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm transition hover:shadow-md">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">📊</div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">4 تقارير يومية</h3>
+                    <p class="text-gray-600 dark:text-gray-400">احصل على تحديثات شاملة 4 مرات يومياً.</p>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm transition hover:shadow-md">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">🇸🇦</div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">تغطية شاملة لاعتماد وفرصة</h3>
+                    <p class="text-gray-600 dark:text-gray-400">تغطية كاملة لأكبر منصات المشتريات الحكومية في المملكة.</p>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm transition hover:shadow-md">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">🌍</div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">ترجمة فورية</h3>
+                    <p class="text-gray-600 dark:text-gray-400">تتم ترجمة جميع المناقصات تلقائياً لتسهيل العمل.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subscription Form Section -->
+    <div id="subscribe" class="bg-gray-900 py-16">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden p-8 border border-blue-100 dark:border-gray-700">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-extrabold text-gray-900">ابدأ تجربتك المجانية لمدة أسبوع</h2>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">No credit card required. Experience the full power of تقارير المناقصات اليومية completely free for 7 days.</p>
+                </div>
+                
+                {% if success %}
+                <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-8">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <span class="text-green-400">✓</span>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-green-700 font-medium">
+                                نجاح! بدأت تجربتك المجانية لمدة 7 أيام. سيتواصل معك مندوبنا قريباً.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <form method="POST" action="/subscribe" class="space-y-6">
+                    <!-- Pricing Toggle -->
+                    <div class="flex justify-center mb-6">
+                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 bg-gray-100 dark:bg-gray-700 p-2 rounded-lg">
+                            <label class="cursor-pointer relative">
+                                <input type="radio" name="subscription_type" value="Monthly" class="peer sr-only" checked>
+                                <div class="px-4 sm:px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white text-sm sm:text-base font-medium text-gray-600 dark:text-gray-300 transition-colors text-center w-full sm:w-auto">
+                                    الباقة الشهرية (100 ريال شهرياً بعد التجربة)
+                                </div>
+                            </label>
+                            <label class="cursor-pointer relative">
+                                <input type="radio" name="subscription_type" value="Annual" class="peer sr-only">
+                                <div class="px-4 sm:px-6 py-2 rounded-md peer-checked:bg-blue-600 peer-checked:text-white text-sm sm:text-base font-medium text-gray-600 dark:text-gray-300 transition-colors text-center w-full sm:w-auto">
+                                    الباقة السنوية (1000 ريال سنوياً بعد التجربة)
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">اسم الشركة *</label>
+                            <input type="text" name="name" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">البريد الإلكتروني *</label>
+                            <input type="email" name="email" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">رقم الجوال *</label>
+                            <input type="text" name="phone" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">رقم السجل التجاري</label>
+                            <input type="text" name="cr_number" class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">الشخص المسؤول *</label>
+                            <input type="text" name="contact_person" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">مجال العمل / التصنيف</label>
+                            <input type="text" name="industry" class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">اللغة المفضلة للتقارير</label>
+                            <select name="language" class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-3 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                                <option value="الإنجليزية">الإنجليزية</option>
+                                <option value="العربية">العربية</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="pt-4">
+                        <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150">
+                            ابدأ تجربتك المجانية لمدة 7 أيام
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-8 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+            <span class="text-xl font-black text-gray-400 tracking-tighter mb-4">Tenders<span class="text-white">Hub</span></span>
+            <p class="text-gray-500 text-sm mb-4">Connecting your business with the best procurement opportunities in Saudi Arabia.</p>
+            <p class="text-gray-600 text-xs">&copy; 2026 تندرز هب. All rights reserved.</p>
+        </div>
+    </footer>
+<script>
         var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
         var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -188,37 +708,35 @@ LANDING_PAGE_HTML_AR = '''
         });
     </script>
 <script>
-        var themeToggleDarkIconAdmin = document.getElementById('theme-toggle-dark-icon-admin');
-        var themeToggleLightIconAdmin = document.getElementById('theme-toggle-light-icon-admin');
+        var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            if(themeToggleLightIconAdmin) themeToggleLightIconAdmin.classList.remove('hidden');
+            themeToggleLightIcon.classList.remove('hidden');
         } else {
-            if(themeToggleDarkIconAdmin) themeToggleDarkIconAdmin.classList.remove('hidden');
+            themeToggleDarkIcon.classList.remove('hidden');
         }
-        var themeToggleBtnAdmin = document.getElementById('theme-toggle-admin');
-        if(themeToggleBtnAdmin) {
-            themeToggleBtnAdmin.addEventListener('click', function() {
-                themeToggleDarkIconAdmin.classList.toggle('hidden');
-                themeToggleLightIconAdmin.classList.toggle('hidden');
-                if (localStorage.getItem('color-theme')) {
-                    if (localStorage.getItem('color-theme') === 'light') {
-                        document.documentElement.classList.add('dark');
-                        localStorage.setItem('color-theme', 'dark');
-                    } else {
-                        document.documentElement.classList.remove('dark');
-                        localStorage.setItem('color-theme', 'light');
-                    }
+        var themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', function() {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
                 } else {
-                    if (document.documentElement.classList.contains('dark')) {
-                        document.documentElement.classList.remove('dark');
-                        localStorage.setItem('color-theme', 'light');
-                    } else {
-                        document.documentElement.classList.add('dark');
-                        localStorage.setItem('color-theme', 'dark');
-                    }
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
                 }
-            });
-        }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
     </script>
 </body>
 </html>
